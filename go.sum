@@ -1,5 +1,7 @@
 github.com/995933447/log-go v0.0.0-20220731153256-b5973c9e2e5c h1:wCDQ6Q2roaqucvz+AC+FyFSZUwfsGHCm5XF/UpF4vfs=
 github.com/995933447/log-go v0.0.0-20220731153256-b5973c9e2e5c/go.mod h1:VtUKRJydLOzba3STSgfNymoII56hCdAlo9trWD601fA=
+github.com/995933447/optionstream v0.0.0-20220801163524-43705e913096 h1:KVpjl86dZ5mmqWRe+Kg6M+DwuZsrNaocBU/HZ/BzFjU=
+github.com/995933447/optionstream v0.0.0-20220801163524-43705e913096/go.mod h1:RCOWvoFza1fFDDffsoqbDmT+FdN581c3QFu84xoqWfA=
 github.com/995933447/simpletrace v0.0.0-20220731143730-10f77a6d7381/go.mod h1:NZRvYDThUkT5Lrr+5/NyXtQC2RgKgGQCgkr9yQw6cV4=
 github.com/995933447/simpletrace v0.0.0-20220731150137-e9c6219dd21d h1:LNm48leY4tHFUSXUWBXR1OHP6jlT5WJJSniSGE6y9n0=
 github.com/995933447/simpletrace v0.0.0-20220731150137-e9c6219dd21d/go.mod h1:3EZ4DZlNwShFb/WN6py+7oARLavgvAq/JhMANPn2bmk=
