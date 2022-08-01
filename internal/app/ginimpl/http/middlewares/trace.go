@@ -4,9 +4,9 @@ import (
 	"github.com/995933447/simpletrace"
 	simpletracectx "github.com/995933447/simpletrace/context"
 	"github.com/gin-gonic/gin"
-	"wegod/internal/app/ginimpl/enum"
-	"wegod/internal/pkg/config"
-	"wegod/internal/pkg/context/http/header"
+	"github.com/vision-first/wegod/internal/app/ginimpl/enum"
+	"github.com/vision-first/wegod/internal/pkg/config"
+	"github.com/vision-first/wegod/internal/pkg/context/http/header"
 )
 
 func Trace(ctx *gin.Context) {

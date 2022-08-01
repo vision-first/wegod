@@ -2,7 +2,7 @@ package providers
 
 import (
 	"github.com/995933447/log-go"
-	"wegod/internal/pkg/facades"
+	"github.com/vision-first/wegod/internal/pkg/facades"
 )
 
 type MigrateDataModelProvider struct {

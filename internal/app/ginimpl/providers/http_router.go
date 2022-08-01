@@ -2,9 +2,9 @@ package providers
 
 import (
 	"github.com/gin-gonic/gin"
-	"wegod/internal/app/ginimpl/facades"
-	"wegod/internal/app/ginimpl/http/middlewares"
-	"wegod/internal/app/ginimpl/http/response"
+	"github.com/vision-first/wegod/internal/app/ginimpl/facades"
+	"github.com/vision-first/wegod/internal/app/ginimpl/http/middlewares"
+	"github.com/vision-first/wegod/internal/app/ginimpl/http/response"
 )
 
 type HttpRouterProvider struct {

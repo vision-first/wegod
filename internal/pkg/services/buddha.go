@@ -1,7 +1,7 @@
 package services
 
 import (
-	"wegod/internal/pkg/datamodels"
+	"github.com/vision-first/wegod/internal/pkg/datamodels"
 )
 
 type Buddha interface {

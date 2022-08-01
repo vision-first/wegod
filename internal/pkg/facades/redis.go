@@ -2,9 +2,9 @@ package facades
 
 import (
 	"sync"
-	"wegod/internal/pkg/config"
+	"github.com/vision-first/wegod/internal/pkg/config"
 	"github.com/995933447/log-go"
-	"wegod/internal/pkg/redis"
+	"github.com/vision-first/wegod/internal/pkg/redis"
 )
 
 var (

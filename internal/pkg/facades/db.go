@@ -6,8 +6,8 @@ import (
 	"gorm.io/gorm/logger"
 	"sync"
 	"time"
-	"wegod/internal/pkg/config"
-	"wegod/internal/pkg/db/mysql/orms/gormimpl"
+	"github.com/vision-first/wegod/internal/pkg/config"
+	"github.com/vision-first/wegod/internal/pkg/db/mysql/orms/gormimpl"
 )
 
 var (
