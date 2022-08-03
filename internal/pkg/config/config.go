@@ -2,11 +2,11 @@ package config
 
 import (
 	"encoding/json"
+	"errors"
 	"github.com/BurntSushi/toml"
 	"io/ioutil"
 	"path/filepath"
 	"time"
-	"errors"
 )
 
 type Config struct {
@@ -25,6 +25,10 @@ func init() {
 	var err error
 	Conf, err = NewConfig("/var/work/go-src/person/wegod/config/config.json", time.Second * 10)
 	if err != nil {
+		panic(err)
+	}
+
+	if err = Conf.load(); err != nil {
 		panic(err)
 	}
 

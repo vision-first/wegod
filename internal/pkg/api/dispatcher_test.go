@@ -3,7 +3,7 @@ package api
 import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
-	"github.com/vision-first/wegod/internal/app/ginimpl/apidispatcher"
+	"github.com/vision-first/wegod/internal/app/ginimpl"
 	"github.com/vision-first/wegod/internal/app/ginimpl/facades"
 	"github.com/vision-first/wegod/internal/pkg/api/apis"
 	"github.com/vision-first/wegod/internal/pkg/api/dtos"
@@ -30,7 +30,7 @@ func TestReflectApiMethod(t *testing.T) {
 		t.Logf("field %d:%v", i, reflectType.In(i).Elem())
 	}
 
-	apiReplyReflects := reflect.ValueOf(buddhaApi.PageBuddha).Call([]reflect.Value{reflect.ValueOf(apidispatcher.NewApiContext(&gin.Context{})), reflect.ValueOf(&dtos.PageBuddhaReq{})})
+	apiReplyReflects := reflect.ValueOf(buddhaApi.PageBuddha).Call([]reflect.Value{reflect.ValueOf(ginimpl.NewApiContext(&gin.Context{})), reflect.ValueOf(&dtos.PageBuddhaReq{})})
 	err := apiReplyReflects[1].Interface().(error)
 	if err != nil {
 		t.Logf("err:%v", err)

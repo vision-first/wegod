@@ -37,7 +37,7 @@ func MustLogger() *log.Logger {
 }
 
 func MustNewFileLoggerWriter() log.LoggerWriter {
-	logger := loggerwriters.NewFileLoggerWriter(
+	loggerWriter := loggerwriters.NewFileLoggerWriter(
 		config.Conf.Log.Dir,
 		config.Conf.Log.MaxFileSize,
 		10,
@@ -46,14 +46,14 @@ func MustNewFileLoggerWriter() log.LoggerWriter {
 	)
 
 	go func() {
-		if err := logger.Loop(); err != nil {
+		if err := loggerWriter.Loop(); err != nil {
 			panic(err)
 		}
 	}()
 
-	logger.SetFormatter(NewGinSimpleTraceFormatter())
+	loggerWriter.SetFormatter(NewGinSimpleTraceFormatter())
 
-	return logger
+	return loggerWriter
 }
 
 type GinSimpleTraceFormatter struct {
