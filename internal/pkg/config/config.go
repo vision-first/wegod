@@ -2,11 +2,11 @@ package config
 
 import (
 	"encoding/json"
-	"errors"
 	"github.com/BurntSushi/toml"
 	"io/ioutil"
 	"path/filepath"
 	"time"
+	"errors"
 )
 
 type Config struct {

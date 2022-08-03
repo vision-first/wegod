@@ -1,10 +1,10 @@
 package facades
 
 import (
+	"github.com/995933447/redisgroup"
 	"github.com/vision-first/wegod/internal/pkg/facades"
-	"github.com/vision-first/wegod/internal/pkg/redis"
 )
 
-func RedisGroup() *redis.RedisGroup {
+func RedisGroup() *redisgroup.Group {
 	return facades.RedisGroup(MustLogger())
 }

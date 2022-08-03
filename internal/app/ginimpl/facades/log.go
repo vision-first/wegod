@@ -2,16 +2,16 @@ package facades
 
 import (
 	"context"
-	"github.com/gin-gonic/gin"
-	"sync"
-	"github.com/vision-first/wegod/internal/app/ginimpl/enum"
-	"github.com/vision-first/wegod/internal/pkg/config"
-	"github.com/vision-first/wegod/internal/pkg/facades"
 	"github.com/995933447/log-go"
 	"github.com/995933447/log-go/impls/fmts"
 	"github.com/995933447/log-go/impls/loggerwriters"
-	"github.com/995933447/std-go/print"
 	simpletracectx "github.com/995933447/simpletrace/context"
+	"github.com/995933447/std-go/print"
+	"github.com/gin-gonic/gin"
+	"github.com/vision-first/wegod/internal/app/ginimpl/enum"
+	"github.com/vision-first/wegod/internal/pkg/config"
+	"github.com/vision-first/wegod/internal/pkg/facades"
+	"sync"
 )
 
 var (
@@ -73,7 +73,12 @@ func (f *GinSimpleTraceFormatter) Sprintf(ctx context.Context, level log.Level, 
 		}
 	}
 
-	return f.fmt.Sprintf(ctx, level, stdoutColor, format, args...)
+	content, err := f.fmt.Sprintf(ctx, level, stdoutColor, format, args...)
+	if err != nil {
+		return "", err
+	}
+
+	return content, nil
 }
 
 

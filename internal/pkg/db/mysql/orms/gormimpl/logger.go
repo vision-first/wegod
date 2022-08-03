@@ -4,11 +4,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/995933447/log-go"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/utils"
 	"time"
-	"github.com/995933447/log-go"
 )
 
 type Logger struct {
@@ -79,9 +79,9 @@ func (l *Logger) Trace(ctx context.Context, begin time.Time, fc func() (sql stri
 	case l.logLevel == logger.Info:
 		sql, rows := fc()
 		if rows == -1 {
-			l.baseLogger.Debugf(ctx, traceStr, utils.FileWithLineNum(), float64(elapsed.Nanoseconds())/1e6, "-", sql)
+			l.baseLogger.Infof(ctx, traceStr, utils.FileWithLineNum(), float64(elapsed.Nanoseconds())/1e6, "-", sql)
 		} else {
-			l.baseLogger.Debugf(ctx, traceStr, utils.FileWithLineNum(), float64(elapsed.Nanoseconds())/1e6, rows, sql)
+			l.baseLogger.Infof(ctx, traceStr, utils.FileWithLineNum(), float64(elapsed.Nanoseconds())/1e6, rows, sql)
 		}
 	}
 }

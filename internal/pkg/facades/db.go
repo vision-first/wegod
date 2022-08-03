@@ -1,13 +1,14 @@
 package facades
 
 import (
+	"context"
 	"github.com/995933447/log-go"
+	"github.com/vision-first/wegod/internal/pkg/config"
+	"github.com/vision-first/wegod/internal/pkg/db/mysql/orms/gormimpl"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"sync"
 	"time"
-	"github.com/vision-first/wegod/internal/pkg/config"
-	"github.com/vision-first/wegod/internal/pkg/db/mysql/orms/gormimpl"
 )
 
 var (
@@ -15,7 +16,7 @@ var (
 	gormDB *gorm.DB
 )
 
-func MustGormDB(baseLogger *log.Logger) *gorm.DB {
+func MustGormDB(ctx context.Context, baseLogger *log.Logger) *gorm.DB {
 	if gormDB == nil {
 		newGormDBMu.Lock()
 		defer newGormDBMu.Unlock()
@@ -38,6 +39,10 @@ func MustGormDB(baseLogger *log.Logger) *gorm.DB {
 		if err != nil {
 			panic(err)
 		}
+	}
+
+	if ctx != nil {
+		return gormDB.WithContext(ctx)
 	}
 	return gormDB
 }

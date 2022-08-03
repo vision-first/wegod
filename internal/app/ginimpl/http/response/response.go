@@ -1,7 +1,9 @@
 package response
 
 import (
+	"github.com/995933447/apperrdef"
 	"github.com/gin-gonic/gin"
+	"github.com/vision-first/wegod/internal/pkg/errs"
 	"net/http"
 )
 
@@ -12,7 +14,7 @@ type Response struct {
 }
 
 type JsonResponseContent struct {
-	ErrCode int
+	ErrCode apperrdef.ErrCode
 	Data interface{}
 	ErrMsg string
 }
@@ -32,6 +34,27 @@ func EndSuccessfulJson(ctx *gin.Context, data interface{}) {
 		StatusCode: http.StatusOK,
 		Content: &JsonResponseContent{
 			Data: data,
+		},
+		ContentFmt: RspContentFmtJson,
+	})
+}
+
+func EndFailedJsonWithErr(ctx *gin.Context, err error) {
+	okErr, ok := apperrdef.ToError(err)
+	if !ok {
+		EndFailedJson(ctx, errs.ErrCodeInternal, "system error")
+		return
+	}
+
+	EndFailedJson(ctx, okErr.GetErrCode(), okErr.GetErrMsg())
+}
+
+func EndFailedJson(ctx *gin.Context, errCode apperrdef.ErrCode, errMsg string) {
+	ctx.Set(CtxKeyRspData, &Response{
+		StatusCode: http.StatusOK,
+		Content: &JsonResponseContent{
+			ErrCode: errCode,
+			ErrMsg: errMsg,
 		},
 		ContentFmt: RspContentFmtJson,
 	})

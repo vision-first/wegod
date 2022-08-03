@@ -1,26 +1,26 @@
 package facades
 
 import (
-	"sync"
-	"github.com/vision-first/wegod/internal/pkg/config"
 	"github.com/995933447/log-go"
-	"github.com/vision-first/wegod/internal/pkg/redis"
+	"github.com/995933447/redisgroup"
+	"github.com/vision-first/wegod/internal/pkg/config"
+	"sync"
 )
 
 var (
 	newRedisGroupMu sync.Mutex
-	redisGroup *redis.RedisGroup
+	redisGroup *redisgroup.Group
 )
 
-func RedisGroup(logger *log.Logger) *redis.RedisGroup {
+func RedisGroup(logger *log.Logger) *redisgroup.Group {
 	if redisGroup == nil {
 		newRedisGroupMu.Lock()
 		defer newRedisGroupMu.Unlock()
-		var redisNodes []*redis.RedisNode
+		var redisNodes []*redisgroup.Node
 		for _, nodeConfig := range config.Conf.Redis.Nodes {
-			redisNodes = append(redisNodes, redis.NewRedisNode(nodeConfig.Host, nodeConfig.Port, nodeConfig.Password))
+			redisNodes = append(redisNodes, redisgroup.NewNode(nodeConfig.Host, nodeConfig.Port, nodeConfig.Password))
 		}
-		redisGroup = redis.NewRedisGroup(redisNodes, logger)
+		redisGroup = redisgroup.NewGroup(redisNodes, logger)
 	}
 
 	return redisGroup

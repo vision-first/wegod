@@ -2,9 +2,11 @@ package providers
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/vision-first/wegod/internal/app/ginimpl"
 	"github.com/vision-first/wegod/internal/app/ginimpl/facades"
 	"github.com/vision-first/wegod/internal/app/ginimpl/http/middlewares"
 	"github.com/vision-first/wegod/internal/app/ginimpl/http/response"
+	"github.com/vision-first/wegod/internal/pkg/api/apis"
 )
 
 type HttpRouterProvider struct {
@@ -23,11 +25,18 @@ func (p *HttpRouterProvider) Boot() error {
 	p.srv.Use(middlewares.Trace)
 	p.srv.Use(middlewares.RspFlusher)
 
+	logger := facades.MustLogger()
 	p.srv.GET("/hello", func(ctx *gin.Context) {
-		facades.MustLogger().Debug(ctx, "this is a gin log")
+		logger.Debug(ctx, "this is a gin log")
 		response.EndSuccessfulJson(ctx, gin.H{
 			"hello": "world",
 		})
+	})
+
+	apiDispatcher := ginimpl.NewApiDispatcher()
+	buddhaApi := apis.NewBuddha(logger)
+	p.srv.POST("/buddhas", func(ctx *gin.Context) {
+		apiDispatcher.Dispatch(ctx, buddhaApi.PageBuddha)
 	})
 
 	return nil
