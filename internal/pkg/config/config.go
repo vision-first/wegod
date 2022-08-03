@@ -79,7 +79,6 @@ func (c *Config) Loop() (errCh chan error, doLoop func(), cancelLoop func()) {
 			case _ = <- cancelLoopSignCh:
 				reloadTicker.Stop()
 				isCanceledLoop = true
-			default:
 			}
 
 			if isCanceledLoop {
