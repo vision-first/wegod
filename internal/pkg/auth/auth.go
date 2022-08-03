@@ -4,16 +4,16 @@ import (
 	"github.com/vision-first/wegod/internal/pkg/datamodels"
 )
 
-type Auth struct {
+type Ident struct {
 	user *datamodels.User
 }
 
-func NewAuth(user *datamodels.User) *Auth {
-	return &Auth{
+func NewIdent(user *datamodels.User) *Ident {
+	return &Ident{
 		user: user,
 	}
 }
 
-func (a *Auth) User() *datamodels.User {
-	return a.user
+func (i *Ident) GetUser() *datamodels.User {
+	return i.user
 }

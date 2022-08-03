@@ -5,6 +5,7 @@ import (
 	"github.com/995933447/log-go"
 	"github.com/995933447/optionstream"
 	"github.com/vision-first/wegod/internal/pkg/datamodels"
+	"github.com/vision-first/wegod/internal/pkg/db/enum"
 	"github.com/vision-first/wegod/internal/pkg/db/mysql/orms/gormimpl"
 	"github.com/vision-first/wegod/internal/pkg/facades"
 	"gorm.io/gorm/clause"
@@ -22,7 +23,7 @@ func NewBuddha(logger *log.Logger) *Buddha {
 
 func (b *Buddha) PageBuddha(ctx context.Context, queryStream *optionstream.QueryStream) ([]*datamodels.Buddha, *optionstream.Pagination, error) {
 	var list []*datamodels.Buddha
-	db := facades.MustGormDB(ctx, b.logger).Order(clause.OrderByColumn{Column: clause.Column{Name: "id"}, Desc: true})
+	db := facades.MustGormDB(ctx, b.logger).Order(clause.OrderByColumn{Column: clause.Column{Name: enum.FieldId}, Desc: true})
 	pagination, err := optionstream.NewQueryStreamProcessor(queryStream).PaginateFrom(ctx, gormimpl.NewOptStreamQuery(db), &list)
 	if err != nil {
 		b.logger.Error(ctx, err)

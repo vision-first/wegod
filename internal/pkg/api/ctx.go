@@ -7,5 +7,5 @@ import (
 
 type Context interface {
 	context.Context
-	GetAuth() (*auth.Auth, bool)
+	GetAuthIdent() (*auth.Ident, bool)
 }

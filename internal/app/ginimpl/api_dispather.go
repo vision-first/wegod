@@ -13,8 +13,8 @@ import (
 )
 
 type ApiContext struct {
-	auth *auth.Auth
 	ginCtx *gin.Context
+	ident *auth.Ident
 }
 
 func NewApiContext(ctx *gin.Context) *ApiContext {
@@ -23,17 +23,16 @@ func NewApiContext(ctx *gin.Context) *ApiContext {
 		ginCtx: ctx,
 	}
 	if ok {
-		apiCtx.auth = authForInterface.(*auth.Auth)
+		apiCtx.ident = authForInterface.(*auth.Ident)
 	}
 	return apiCtx
 }
 
-func (c *ApiContext) GetAuth() (*auth.Auth, bool) {
-	if c.auth == nil {
+func (c *ApiContext) GetAuthIdent() (*auth.Ident, bool) {
+	if c.ident == nil {
 		return nil, false
 	}
-
-	return c.auth, true
+	return c.ident, true
 }
 
 func (c *ApiContext) GetGinCtx() *gin.Context {

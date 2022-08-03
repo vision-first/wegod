@@ -20,9 +20,9 @@ func NewDispatcher(logger *log.Logger) *Dispatcher {
 
 func (d *Dispatcher) Dispatch(ctx Context, apiMethod interface{}, dispatchApiReq DispatchApiReqFunc) (interface{}, error) {
 	apiMethodType := reflect.TypeOf(apiMethod)
-	invalidApiMethodErr := errors.New("apiMethod is not func(api.*Context, interface{}) (interface{}, error)")
+	invalidApiMethodErr := errors.New("arg[1] is not func(api.*Context, interface{}) (interface{}, error)")
 	if apiMethodType.Kind() != reflect.Func {
-		err := errors.New("apiMethod is not a func")
+		err := errors.New("arg[1] is not a func")
 		d.logger.Error(ctx, err)
 		return nil, err
 	}
@@ -40,15 +40,16 @@ func (d *Dispatcher) Dispatch(ctx Context, apiMethod interface{}, dispatchApiReq
 		apiReqType = apiReqType.Elem()
 	}
 	if apiReqType.Kind() != reflect.Struct {
-		d.logger.Error(ctx, invalidApiMethodErr)
-		return nil, invalidApiMethodErr
+		err := errors.New("arg[1].In(1) is not a struct")
+		d.logger.Error(ctx, err)
+		return nil, err
 	}
 	apiRespType := apiMethodType.Out(0)
 	if apiRespType.Kind() == reflect.Ptr {
 		apiRespType = apiRespType.Elem()
 	}
 	if apiRespType.Kind() != reflect.Struct {
-		err := errors.New("apiMethod.Out(1) is not a struct")
+		err := errors.New("arg[1].Out(1) is not a struct")
 		d.logger.Error(ctx, err)
 		return nil, err
 	}
