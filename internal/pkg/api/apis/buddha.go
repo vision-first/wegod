@@ -41,3 +41,11 @@ func (b *Buddha) PageBuddha(ctx api.Context, req *dtos.PageBuddhaReq) (*dtos.Pag
 	}
 	return &resp, nil
 }
+
+func (b *Buddha) WatchBuddha(ctx api.Context, req *dtos.WatchBuddhaReq) (*dtos.WatchBuddhaResp, error) {
+    var resp dtos.WatchBuddhaResp
+
+    // TODO.Write your logic
+
+    return &resp, nil
+}

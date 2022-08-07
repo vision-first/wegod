@@ -18,3 +18,9 @@ type PageBuddhaResp struct {
 	List []*Buddha
 	Pagination *optionstream.Pagination
 }
+
+type WatchBuddhaReq struct {
+}
+
+type WatchBuddhaResp struct {
+}
