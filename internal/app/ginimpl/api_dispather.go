@@ -67,7 +67,7 @@ func NewApiDispatcher() *ApiDispatcher {
 	}
 }
 
-func (d *ApiDispatcher) MakeDispatchHandlerFunc(apiMethod interface{}) gin.HandlerFunc {
+func (d *ApiDispatcher) MakeDispatchFunc(apiMethod interface{}) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		d.Dispatch(ctx, apiMethod)
 	}

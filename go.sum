@@ -19,8 +19,14 @@ github.com/995933447/simpletrace v0.0.0-20220731150137-e9c6219dd21d h1:LNm48leY4
 github.com/995933447/simpletrace v0.0.0-20220731150137-e9c6219dd21d/go.mod h1:3EZ4DZlNwShFb/WN6py+7oARLavgvAq/JhMANPn2bmk=
 github.com/995933447/std-go v0.0.0-20220731152403-7a2382e99cd8 h1:qxB5eCNrN75E8Lt+OOLRToTaci0Rf/cVzxxFWgSkFWM=
 github.com/995933447/std-go v0.0.0-20220731152403-7a2382e99cd8/go.mod h1:Y48pg+Gwti1Ck6BZSCm/+UHmtzC4A1pARw6UdFMpNaI=
+github.com/995933447/std-go v0.0.0-20220806175833-ab3496c0b696 h1:GzBuvejakMWMZ6QWpbpcFmJb9WYrZ++yOrm/IEap+hw=
+github.com/995933447/std-go v0.0.0-20220806175833-ab3496c0b696/go.mod h1:Y48pg+Gwti1Ck6BZSCm/+UHmtzC4A1pARw6UdFMpNaI=
 github.com/995933447/stringhelper-go v0.0.0-20220731145713-daa961470957 h1:mTeUsZxg6oHkI8Fs+z2Fco3+gq7gFQWLjHBbTV3pP48=
 github.com/995933447/stringhelper-go v0.0.0-20220731145713-daa961470957/go.mod h1:cwkwj1/zndmaLbRYgQqy6qwY/ITAiEMdR+1BGssgXik=
+github.com/995933447/stringhelper-go v0.0.0-20220806171918-329b8bac9af8 h1:BqMBC+uOMYAFSz7wVU0EN6/TUdc12O8i+/+9iPmTlc0=
+github.com/995933447/stringhelper-go v0.0.0-20220806171918-329b8bac9af8/go.mod h1:cwkwj1/zndmaLbRYgQqy6qwY/ITAiEMdR+1BGssgXik=
+github.com/995933447/structfieldconstgen v0.0.0-20220806190831-96c8b5689b38 h1:IlV4WrjiUOlvhZy+ei1jPJj30xm9NgVGEVmixw46BuM=
+github.com/995933447/structfieldconstgen v0.0.0-20220806190831-96c8b5689b38/go.mod h1:TLtg9NKevS0cEyLFNeZw4n7gDQaB9e1sVxmxUosyAdI=
 github.com/BurntSushi/toml v1.2.0 h1:Rt8g24XnyGTyglgET/PRUNlrUeu9F5L+7FilkXfZgs0=
 github.com/BurntSushi/toml v1.2.0/go.mod h1:CxXYINrC8qIiEnFrOxCa7Jy5BFHlXnUU2pbicEuybxQ=
 github.com/cespare/xxhash/v2 v2.1.2 h1:YRXhKfTDauu4ajMg1TPgFO5jnlC2HCbmLXMcTG5cbYE=

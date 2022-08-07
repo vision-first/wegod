@@ -35,7 +35,7 @@ func (p *HttpRouterProvider) Boot() error {
 
 	apiDispatcher := ginimpl.NewApiDispatcher()
 	buddhaApi := apis.NewBuddha(logger)
-	p.srv.POST("/buddhas", apiDispatcher.MakeDispatchHandlerFunc(buddhaApi.PageBuddha))
+	p.srv.POST("/buddhas", apiDispatcher.MakeDispatchFunc(buddhaApi.PageBuddha))
 
 	return nil
 }

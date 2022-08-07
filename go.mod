@@ -8,7 +8,7 @@ require (
 	github.com/995933447/optionstream v0.0.0-20220803074316-dd787a7cc8c9
 	github.com/995933447/redisgroup v0.0.0-20220802145701-7a43cc9c8294
 	github.com/995933447/simpletrace v0.0.0-20220731150137-e9c6219dd21d
-	github.com/995933447/std-go v0.0.0-20220731152403-7a2382e99cd8
+	github.com/995933447/std-go v0.0.0-20220806175833-ab3496c0b696
 	github.com/BurntSushi/toml v1.2.0
 	github.com/gin-gonic/gin v1.8.1
 	github.com/go-redis/redis/v8 v8.11.5
@@ -17,7 +17,8 @@ require (
 )
 
 require (
-	github.com/995933447/stringhelper-go v0.0.0-20220731145713-daa961470957 // indirect
+	github.com/995933447/stringhelper-go v0.0.0-20220806171918-329b8bac9af8 // indirect
+	github.com/995933447/structfieldconstgen v0.0.0-20220806190831-96c8b5689b38 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
