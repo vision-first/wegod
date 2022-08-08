@@ -15,6 +15,6 @@ func GenApi() {
 		"../internal/pkg/api",
 	)
 	if err != nil {
-		panic(err)
+		logger.Error(NewCtx(), err)
 	}
 }
