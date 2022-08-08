@@ -14,75 +14,34 @@ import (
 	"text/template"
 )
 
-func GenApi(apiModule, apiMethod, apiPkgFullName, apiPkgPath string) error {
-	if err := genApiDTOs(apiModule, apiMethod, apiPkgPath); err != nil {
+func GenApi(apiModule, apiMethod, apiPkgPath, apiPkgCodePath string) error {
+	if err := genApiDTOs(apiModule, apiMethod, apiPkgCodePath); err != nil {
 		return err
 	}
 
-	if err := genApiModuleAndMethod(apiModule, apiMethod, apiPkgFullName, apiPkgPath); err != nil {
+	if err := genApiModuleAndMethod(apiModule, apiMethod, apiPkgPath, apiPkgCodePath); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func genApiModuleAndMethod(apiModule, apiMethod, apiPkgFullName, apiPkgPath string) error {
-	apiPkgPath = strings.TrimRight(apiPkgPath, "/")
-	apiImplsPkgPath := apiPkgPath + "/apis"
-
-	fset := token.NewFileSet()
-	apiImplsPkgMap, err := parser.ParseDir(fset, apiImplsPkgPath, nil, 0)
+func genApiModuleAndMethod(apiModule, apiMethod, apiPkgPath, apiPkgCodePath string) error {
+	alreadyExistApiStruct, alreadyExistApiMethod, codeFilePath, err := checkExistApiOrMethodAndGetCodePath(apiModule, apiMethod, apiPkgCodePath)
 	if err != nil {
 		return err
 	}
 
-	var (
-		alreadyGenApiStruct bool
-		apiCodeFilePath string
-	)
-	for _, pkg:= range apiImplsPkgMap {
-		for filePath, file := range pkg.Files {
-			for _, decl := range file.Decls {
-				if genDecl, ok := decl.(*ast.GenDecl); ok {
-					for _, spec := range genDecl.Specs {
-						if typeSpec, ok := spec.(*ast.TypeSpec); ok {
-							if _, ok := typeSpec.Type.(*ast.StructType); ok && typeSpec.Name.String() == apiModule {
-								alreadyGenApiStruct = true
-								apiCodeFilePath = filePath
-							}
-						}
-					}
-				}
-
-				if funcDecl, ok := decl.(*ast.FuncDecl); ok &&
-					funcDecl.Name.String() == apiMethod &&
-					funcDecl.Recv != nil &&
-					len(funcDecl.Recv.List) == 1 {
-					starExprRecvType, ok := funcDecl.Recv.List[0].Type.(*ast.StarExpr)
-					if !ok {
-						continue
-					}
-					starExprRecvTypeIdent, ok := starExprRecvType.X.(*ast.Ident)
-					if !ok {
-						continue
-					}
-					if starExprRecvTypeIdent.String() == apiModule {
-						return fmt.Errorf("api method: %s.%s already exist", apiModule, apiMethod)
-					}
-				}
-			}
-		}
+	if alreadyExistApiMethod {
+		return fmt.Errorf("api method: %s.%s already exist", apiModule, apiMethod)
 	}
 
 	var isApiCodeFilePathEmpty bool
-	if apiCodeFilePath == "" {
-		apiCodeFilePath = apiImplsPkgPath + "/" + stringhelper.Snake(apiModule) + ".go"
-		if _, err = os.Stat(apiCodeFilePath); os.IsNotExist(err) {
-			isApiCodeFilePathEmpty = true
-		}
+	if _, err = os.Stat(codeFilePath); os.IsNotExist(err) {
+		isApiCodeFilePathEmpty = true
 	}
 
-	apiFp, err := os.OpenFile(apiCodeFilePath, os.O_CREATE|os.O_RDWR|os.O_APPEND, fs.ModePerm)
+	apiFp, err := os.OpenFile(codeFilePath, os.O_CREATE|os.O_RDWR|os.O_APPEND, fs.ModePerm)
 	if err != nil {
 		return err
 	}
@@ -92,7 +51,7 @@ func genApiModuleAndMethod(apiModule, apiMethod, apiPkgFullName, apiPkgPath stri
 		if err != nil {
 			return err
 		}
-		file, err := parser.ParseFile(fset, "", fileContent, 0)
+		file, err := parser.ParseFile(token.NewFileSet(), "", fileContent, 0)
 		if err != nil {
 			return err
 		}
@@ -103,14 +62,14 @@ func genApiModuleAndMethod(apiModule, apiMethod, apiPkgFullName, apiPkgPath stri
 
 	outputApiTemplate := "\n\n"
 
-	if !alreadyGenApiStruct {
+	if !alreadyExistApiStruct {
 		if isApiCodeFilePathEmpty {
 			outputApiTemplate = `package apis
 
 import (
 	"github.com/995933447/log-go"
-	"` + apiPkgFullName + `"
-	"` + apiPkgFullName + `/dtos"
+	"` + apiPkgPath + `"
+	"` + apiPkgPath + `/dtos"
 )
 
 `
@@ -172,76 +131,79 @@ import (
 	return nil
 }
 
-func genApiDTOs(apiModule, apiMethod, apiPkgPath string) error {
-	dtosPkgPath := apiPkgPath + "/dtos"
+func checkExistApiOrMethodAndGetCodePath(apiModule, apiMethod, apiPkgCodePath string) (existApiStruct, existApiMethod bool, codeFilePath string, err error) {
+	apiPkgCodePath = strings.TrimRight(apiPkgCodePath, "/")
+	apiImplsPkgPath := apiPkgCodePath + "/apis"
 
 	fset := token.NewFileSet()
-	dtosPkgMap, err := parser.ParseDir(fset, dtosPkgPath, nil,0)
+	apiImplsPkgMap, err := parser.ParseDir(fset, apiImplsPkgPath, nil, 0)
 	if err != nil {
-		return err
+		return
 	}
 
-	var (
-		alreadyExistReqDTO bool
-		alreadyExistRespDTO bool
-		dtoCodeFilePath string
-	)
-	for _, pkg := range dtosPkgMap {
+	for _, pkg:= range apiImplsPkgMap {
 		for filePath, file := range pkg.Files {
 			for _, decl := range file.Decls {
-				genDecl, ok := decl.(*ast.GenDecl)
-				if !ok {
-					continue
+				if genDecl, ok := decl.(*ast.GenDecl); ok {
+					for _, spec := range genDecl.Specs {
+						if typeSpec, ok := spec.(*ast.TypeSpec); ok {
+							if _, ok := typeSpec.Type.(*ast.StructType); ok && typeSpec.Name.String() == apiModule {
+								existApiStruct = true
+								codeFilePath = filePath
+							}
+						}
+					}
 				}
 
-				if genDecl.Tok != token.TYPE {
-					continue
-				}
-
-				for _, spec := range genDecl.Specs {
-					typeSpec, ok := spec.(*ast.TypeSpec)
+				if funcDecl, ok := decl.(*ast.FuncDecl); ok &&
+					funcDecl.Name.String() == apiMethod &&
+					funcDecl.Recv != nil &&
+					len(funcDecl.Recv.List) == 1 {
+					starExprRecvType, ok := funcDecl.Recv.List[0].Type.(*ast.StarExpr)
 					if !ok {
 						continue
 					}
-					if _, ok := typeSpec.Type.(*ast.StructType); ok {
-						structTypeName := typeSpec.Name.String()
-						switch structTypeName {
-						case apiMethod + "Req":
-							alreadyExistReqDTO = true
-							dtoCodeFilePath = filePath
-						case apiMethod + "Resp":
-							alreadyExistRespDTO = true
-							dtoCodeFilePath = filePath
-						}
+					starExprRecvTypeIdent, ok := starExprRecvType.X.(*ast.Ident)
+					if !ok {
+						continue
+					}
+					if starExprRecvTypeIdent.String() == apiModule {
+						existApiMethod = true
 					}
 				}
 			}
 		}
 	}
 
-	if alreadyExistRespDTO && alreadyExistReqDTO {
-		return nil
+	if codeFilePath == "" {
+		codeFilePath = apiImplsPkgPath + "/" + stringhelper.Snake(apiModule) + ".go"
+	}
+
+	return
+}
+
+func genApiDTOs(apiModule, apiMethod, apiPkgCodePath string) error {
+	alreadyExistReqDTO, alreadyExistRespDTO, dtoCodeFilePath, err := checkExistDTOsAndGetCodeFilePath(apiModule, apiMethod, apiPkgCodePath)
+	if err != nil {
+		return err
 	}
 
 	var isDTOCodeFileEmpty bool
-	if dtoCodeFilePath == "" {
-		dtoCodeFilePath = apiPkgPath + "/dtos/" + stringhelper.Snake(apiModule) + ".go"
-		if _, err = os.Stat(dtoCodeFilePath); os.IsNotExist(err) {
-			isDTOCodeFileEmpty = true
-		}
+	if _, err = os.Stat(dtoCodeFilePath); os.IsNotExist(err) {
+		isDTOCodeFileEmpty = true
 	}
 
-	dtosFp, err := os.OpenFile(dtoCodeFilePath, os.O_CREATE|os.O_RDWR|os.O_APPEND, fs.ModePerm)
+	dtoCodeFp, err := os.OpenFile(dtoCodeFilePath, os.O_CREATE|os.O_RDWR|os.O_APPEND, fs.ModePerm)
 	if err != nil {
 		return err
 	}
 
 	if !isDTOCodeFileEmpty {
-		fileContent, err := ioutil.ReadAll(dtosFp)
+		fileContent, err := ioutil.ReadAll(dtoCodeFp)
 		if err != nil {
 			return err
 		}
-		file, err := parser.ParseFile(fset, "", fileContent, 0)
+		file, err := parser.ParseFile(token.NewFileSet(), "", fileContent, 0)
 		if err != nil {
 			return err
 		}
@@ -296,7 +258,7 @@ func genApiDTOs(apiModule, apiMethod, apiPkgPath string) error {
 	outputDTOsTemplateBytes := len(outputDTOsTemplate)
 	var writtenOutputDTOsTemplateBytes int
 	for {
-		n, err := dtosFp.Write([]byte(outputDTOsTemplate))
+		n, err := dtoCodeFp.Write([]byte(outputDTOsTemplate))
 		if err != nil {
 			return err
 		}
@@ -308,4 +270,53 @@ func genApiDTOs(apiModule, apiMethod, apiPkgPath string) error {
 	}
 
 	return nil
+}
+
+func checkExistDTOsAndGetCodeFilePath(apiModule, apiMethod, apiPkgCodePath string) (existReqDTO, existRespDTO bool, codeFilePath string, err error) {
+	dtosPkgPath := apiPkgCodePath + "/dtos"
+
+	fset := token.NewFileSet()
+	dtosPkgMap, err := parser.ParseDir(fset, dtosPkgPath, nil,0)
+	if err != nil {
+		return
+	}
+
+	for _, pkg := range dtosPkgMap {
+		for filePath, file := range pkg.Files {
+			for _, decl := range file.Decls {
+				genDecl, ok := decl.(*ast.GenDecl)
+				if !ok {
+					continue
+				}
+
+				if genDecl.Tok != token.TYPE {
+					continue
+				}
+
+				for _, spec := range genDecl.Specs {
+					typeSpec, ok := spec.(*ast.TypeSpec)
+					if !ok {
+						continue
+					}
+					if _, ok := typeSpec.Type.(*ast.StructType); ok {
+						structTypeName := typeSpec.Name.String()
+						switch structTypeName {
+						case apiMethod + "Req":
+							existReqDTO = true
+							codeFilePath = filePath
+						case apiMethod + "Resp":
+							existRespDTO = true
+							codeFilePath = filePath
+						}
+					}
+				}
+			}
+		}
+	}
+
+	if codeFilePath == "" {
+		codeFilePath = apiPkgCodePath + "/dtos/" + stringhelper.Snake(apiModule) + ".go"
+	}
+
+	return existReqDTO, existRespDTO, codeFilePath, nil
 }

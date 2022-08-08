@@ -24,3 +24,9 @@ type WatchBuddhaReq struct {
 
 type WatchBuddhaResp struct {
 }
+
+type UnwatchBuddhaReq struct {
+}
+
+type UnwatchBuddhaResp struct {
+}

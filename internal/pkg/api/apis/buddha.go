@@ -49,3 +49,11 @@ func (b *Buddha) WatchBuddha(ctx api.Context, req *dtos.WatchBuddhaReq) (*dtos.W
 
     return &resp, nil
 }
+
+func (b *Buddha) UnwatchBuddha(ctx api.Context, req *dtos.UnwatchBuddhaReq) (*dtos.UnwatchBuddhaResp, error) {
+    var resp dtos.UnwatchBuddhaResp
+
+    // TODO.Write your logic
+
+    return &resp, nil
+}
