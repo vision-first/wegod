@@ -12,4 +12,7 @@ const (
 	FieldRemark = "remark"
 	FieldBuddhaId = "buddha_id"
 	FieldUid = "uid"
+	FieldLastWatchedAt = "last_watched_at"
+	FieldPhone = "phone"
+	FieldPassword = "password"
 )

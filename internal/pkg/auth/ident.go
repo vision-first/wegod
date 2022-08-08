@@ -1,19 +1,15 @@
 package auth
 
-import (
-	"github.com/vision-first/wegod/internal/pkg/datamodels"
-)
-
 type Ident struct {
-	user *datamodels.User
+	uid uint64
 }
 
-func NewIdent(user *datamodels.User) *Ident {
+func NewIdent(uid uint64) *Ident {
 	return &Ident{
-		user: user,
+		uid: uid,
 	}
 }
 
-func (i *Ident) GetUser() *datamodels.User {
-	return i.user
+func (i *Ident) GetUid() uint64 {
+	return i.uid
 }

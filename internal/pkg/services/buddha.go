@@ -9,6 +9,7 @@ import (
 	"github.com/vision-first/wegod/internal/pkg/db/mysql/orms/gormimpl"
 	"github.com/vision-first/wegod/internal/pkg/facades"
 	"gorm.io/gorm/clause"
+	"time"
 )
 
 type Buddha struct {
@@ -32,6 +33,33 @@ func (b *Buddha) PageBuddha(ctx context.Context, queryStream *optionstream.Query
 	return list, pagination, nil
 }
 
-func (b *Buddha) PleaseBuddha(ctx context.Context, user datamodels.User, buddhaId uint64) error {
+func (b *Buddha) WatchBuddha(ctx context.Context, uid, buddhaId uint64) error {
+	userWatchedBuddha := datamodels.UserWatchedBuddha {
+		Uid: uid,
+		BuddhaId: buddhaId,
+		LastWatchedAt: time.Now().Unix(),
+	}
+	res := facades.MustGormDB(ctx, b.logger).
+		Unscoped().
+		Where(&datamodels.UserWatchedBuddha{Uid: uid, BuddhaId: buddhaId}).
+		FirstOrCreate(ctx, &userWatchedBuddha)
+	if res.Error != nil {
+		return res.Error
+	}
+
+	// created
+	if res.RowsAffected > 0 {
+		return nil
+	}
+
+	err := facades.MustGormDB(ctx, b.logger).
+		Unscoped().
+		Where(map[string]interface{}{enum.FieldId: userWatchedBuddha.Id}).
+		Updates(map[string]interface{}{enum.FieldLastWatchedAt: time.Now().Unix(), enum.FieldDeletedAt: 0}).
+		Error
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

@@ -2,12 +2,14 @@ package ginimpl
 
 import (
 	"errors"
+	"github.com/995933447/apperrdef"
 	"github.com/gin-gonic/gin"
 	"github.com/vision-first/wegod/internal/app/ginimpl/enum"
 	"github.com/vision-first/wegod/internal/app/ginimpl/facades"
 	"github.com/vision-first/wegod/internal/app/ginimpl/http/response"
 	"github.com/vision-first/wegod/internal/pkg/api"
 	"github.com/vision-first/wegod/internal/pkg/auth"
+	"github.com/vision-first/wegod/internal/pkg/errs"
 	"net/http"
 	"time"
 )
@@ -16,6 +18,8 @@ type ApiContext struct {
 	ginCtx *gin.Context
 	ident *auth.Ident
 }
+
+var _ api.Context = (*ApiContext)(nil)
 
 func NewApiContext(ctx *gin.Context) *ApiContext {
 	authForInterface, ok := ctx.Get(enum.GinCtxKeyAuth)
@@ -28,11 +32,18 @@ func NewApiContext(ctx *gin.Context) *ApiContext {
 	return apiCtx
 }
 
-func (c *ApiContext) GetAuthIdent() (*auth.Ident, bool) {
+func (c *ApiContext) GetAuthIdent() (*auth.Ident, bool, error) {
 	if c.ident == nil {
-		return nil, false
+		return nil, false, nil
 	}
-	return c.ident, true
+	return c.ident, true, nil
+}
+
+func (c *ApiContext) GetAuthIdentOrFailed() (*auth.Ident, error) {
+	if c.ident == nil {
+		return nil, apperrdef.NewError(errs.ErrCodeNotAuth)
+	}
+	return c.ident, nil
 }
 
 func (c *ApiContext) GetGinCtx() *gin.Context {

@@ -8,8 +8,9 @@ type Buddha struct {
 	Remark string
 }
 
-type UserRefBuddha struct {
+type UserWatchedBuddha struct {
 	BaseModel
 	BuddhaId uint64
 	Uid uint64
+	LastWatchedAt int64
 }

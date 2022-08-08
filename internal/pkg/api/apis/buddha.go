@@ -45,7 +45,16 @@ func (b *Buddha) PageBuddha(ctx api.Context, req *dtos.PageBuddhaReq) (*dtos.Pag
 func (b *Buddha) WatchBuddha(ctx api.Context, req *dtos.WatchBuddhaReq) (*dtos.WatchBuddhaResp, error) {
     var resp dtos.WatchBuddhaResp
 
-    // TODO.Write your logic
+	authIdent, err := ctx.GetAuthIdentOrFailed()
+	if err != nil {
+		b.logger.Error(ctx, err)
+		return nil, err
+	}
+
+	if err = services.NewBuddha(b.logger).WatchBuddha(ctx, authIdent.GetUid(), req.BuddhaId); err != nil {
+		b.logger.Error(ctx, err)
+		return nil, err
+	}
 
     return &resp, nil
 }

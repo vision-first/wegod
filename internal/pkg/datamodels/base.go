@@ -1,13 +1,13 @@
 package datamodels
 
 import (
-	"gorm.io/gorm"
+	"gorm.io/plugin/soft_delete"
 )
 
-//go:generate structfieldconstgen -findPkgPath ../datamodels -outFile ../db/enum/fields.go
+//go:generate structfieldconstgen -findPkgPath ../datamodels -outFile ../db/enum/fields.go -prefix Field
 type BaseModel struct {
 	Id uint64 `gorm:"primaryKey"`
 	CreatedAt int64 `gorm:"autoCreateTime"`
 	UpdatedAt int64 `gorm:"autoUpdateTime"`
-	DeletedAt gorm.DeletedAt `gorm:"index"`
+	DeletedAt soft_delete.DeletedAt `gorm:"index"`
 }

@@ -20,6 +20,7 @@ type PageBuddhaResp struct {
 }
 
 type WatchBuddhaReq struct {
+	BuddhaId uint64
 }
 
 type WatchBuddhaResp struct {
