@@ -4,6 +4,11 @@ import (
 	"gorm.io/plugin/soft_delete"
 )
 
+const (
+	ShelfStatusOnShelf = iota
+	ShelfStatusOffShelf
+)
+
 //go:generate structfieldconstgen -findPkgPath ../datamodels -outFile ../db/enum/fields.go -prefix Field
 type BaseModel struct {
 	Id uint64 `gorm:"primaryKey"`

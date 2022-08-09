@@ -15,19 +15,26 @@ type PageBuddhaReq struct {
 }
 
 type PageBuddhaResp struct {
-	List []*Buddha
-	Pagination *optionstream.Pagination
+	List []*Buddha `json:"list"`
+	Pagination *optionstream.Pagination `json:"pagination"`
 }
 
 type WatchBuddhaReq struct {
-	BuddhaId uint64
+	BuddhaId uint64 `json:"buddha_id"`
 }
 
 type WatchBuddhaResp struct {
 }
 
 type UnwatchBuddhaReq struct {
+	BuddhaId uint64 `json:"buddha_id"`
 }
 
 type UnwatchBuddhaResp struct {
+}
+
+type PageUserWatchedBuddhaReq struct {
+}
+
+type PageUserWatchedBuddhaResp struct {
 }

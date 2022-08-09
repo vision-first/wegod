@@ -51,7 +51,7 @@ func (b *Buddha) WatchBuddha(ctx api.Context, req *dtos.WatchBuddhaReq) (*dtos.W
 		return nil, err
 	}
 
-	if err = services.NewBuddha(b.logger).WatchBuddha(ctx, authIdent.GetUid(), req.BuddhaId); err != nil {
+	if err = services.NewBuddha(b.logger).WatchBuddha(ctx, authIdent.GetUserId(), req.BuddhaId); err != nil {
 		b.logger.Error(ctx, err)
 		return nil, err
 	}
@@ -61,6 +61,25 @@ func (b *Buddha) WatchBuddha(ctx api.Context, req *dtos.WatchBuddhaReq) (*dtos.W
 
 func (b *Buddha) UnwatchBuddha(ctx api.Context, req *dtos.UnwatchBuddhaReq) (*dtos.UnwatchBuddhaResp, error) {
     var resp dtos.UnwatchBuddhaResp
+
+	authIdent, err := ctx.GetAuthIdentOrFailed()
+	if err != nil {
+		b.logger.Error(ctx, err)
+		return nil, err
+	}
+
+    err = services.NewBuddha(b.logger).UnwatchBuddha(ctx, authIdent.GetUserId(), req.BuddhaId)
+	if err != nil {
+		b.logger.Error(ctx, err)
+		return nil, err
+	}
+
+    return &resp, nil
+}
+
+
+func (b *Buddha) PageUserWatchedBuddha(ctx api.Context, req *dtos.PageUserWatchedBuddhaReq) (*dtos.PageUserWatchedBuddhaResp, error) {
+    var resp dtos.PageUserWatchedBuddhaResp
 
     // TODO.Write your logic
 

@@ -32,5 +32,11 @@
         "port": 6379
       }
     ]
+  },
+
+  "encrypt": {
+    "jwt": {
+      "signing_key": "@#$5678998761234poiuy"
+    }
   }
 }

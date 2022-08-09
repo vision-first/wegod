@@ -1,15 +1,15 @@
 package auth
 
 type Ident struct {
-	uid uint64
+	userId uint64
 }
 
-func NewIdent(uid uint64) *Ident {
+func NewIdent(userId uint64) *Ident {
 	return &Ident{
-		uid: uid,
+		userId: userId,
 	}
 }
 
-func (i *Ident) GetUid() uint64 {
-	return i.uid
+func (i *Ident) GetUserId() uint64 {
+	return i.userId
 }

@@ -41,7 +41,7 @@ func (c *ApiContext) GetAuthIdent() (*auth.Ident, bool, error) {
 
 func (c *ApiContext) GetAuthIdentOrFailed() (*auth.Ident, error) {
 	if c.ident == nil {
-		return nil, apperrdef.NewError(errs.ErrCodeNotAuth)
+		return nil, apperrdef.NewError(errs.ErrCodeUnauthorized)
 	}
 	return c.ident, nil
 }

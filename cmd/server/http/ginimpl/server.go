@@ -12,13 +12,7 @@ import (
 func RunServer() error {
 	srv := gin.Default()
 
-	bootstrapper := boot.NewBootstrapper([]boot.ServiceProvider{
-		NewMigrateDataModelProvider([]interface{}{
-			&datamodels.Buddha{},
-		}, facades.MustLogger()),
-		NewHttpRouterProvider(srv),
-	})
-	if err := bootstrapper.Boot(); err != nil {
+	if err := bootServiceProviders(srv); err != nil {
 		return err
 	}
 
@@ -26,5 +20,32 @@ func RunServer() error {
 		return err
 	}
 
+	return nil
+}
+
+func bootServiceProviders(srv *gin.Engine) error {
+	bootstrapper := boot.NewBootstrapper([]boot.ServiceProvider{
+		NewMigrateDataModelProvider([]interface{}{
+			&datamodels.Buddha{},
+			&datamodels.BuddhaFollow{},
+			&datamodels.BuddhaWorship{},
+			&datamodels.BuddhaWorshipProp{},
+			&datamodels.User{},
+			&datamodels.UserPray{},
+			&datamodels.UserDonationDailyStat{},
+			&datamodels.UserDonationRecord{},
+			&datamodels.PrayProp{},
+			&datamodels.ShopProductCategory{},
+			&datamodels.ShopProduct{},
+			&datamodels.ShopOrder{},
+			&datamodels.Music{},
+			&datamodels.PostCategory{},
+			&datamodels.Post{},
+		}, facades.MustLogger()),
+		NewHttpRouterProvider(srv),
+	})
+	if err := bootstrapper.Boot(); err != nil {
+		return err
+	}
 	return nil
 }

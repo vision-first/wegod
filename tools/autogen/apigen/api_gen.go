@@ -135,8 +135,7 @@ func checkExistApiOrMethodAndGetCodePath(apiModule, apiMethod, apiPkgCodePath st
 	apiPkgCodePath = strings.TrimRight(apiPkgCodePath, "/")
 	apiImplsPkgPath := apiPkgCodePath + "/apis"
 
-	fset := token.NewFileSet()
-	apiImplsPkgMap, err := parser.ParseDir(fset, apiImplsPkgPath, nil, 0)
+	apiImplsPkgMap, err := parser.ParseDir(token.NewFileSet(), apiImplsPkgPath, nil, 0)
 	if err != nil {
 		return
 	}
@@ -275,8 +274,7 @@ func genApiDTOs(apiModule, apiMethod, apiPkgCodePath string) error {
 func checkExistDTOsAndGetCodeFilePath(apiModule, apiMethod, apiPkgCodePath string) (existReqDTO, existRespDTO bool, codeFilePath string, err error) {
 	dtosPkgPath := apiPkgCodePath + "/dtos"
 
-	fset := token.NewFileSet()
-	dtosPkgMap, err := parser.ParseDir(fset, dtosPkgPath, nil,0)
+	dtosPkgMap, err := parser.ParseDir(token.NewFileSet(), dtosPkgPath, nil,0)
 	if err != nil {
 		return
 	}

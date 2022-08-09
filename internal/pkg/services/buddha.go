@@ -33,16 +33,16 @@ func (b *Buddha) PageBuddha(ctx context.Context, queryStream *optionstream.Query
 	return list, pagination, nil
 }
 
-func (b *Buddha) WatchBuddha(ctx context.Context, uid, buddhaId uint64) error {
-	userWatchedBuddha := datamodels.UserWatchedBuddha {
-		Uid: uid,
+func (b *Buddha) WatchBuddha(ctx context.Context, userId, buddhaId uint64) error {
+	buddhaFollow := datamodels.BuddhaFollow {
+		UserId: userId,
 		BuddhaId: buddhaId,
-		LastWatchedAt: time.Now().Unix(),
+		WatchedAt: time.Now().Unix(),
 	}
 	res := facades.MustGormDB(ctx, b.logger).
 		Unscoped().
-		Where(&datamodels.UserWatchedBuddha{Uid: uid, BuddhaId: buddhaId}).
-		FirstOrCreate(ctx, &userWatchedBuddha)
+		Where(&datamodels.BuddhaFollow{UserId: userId, BuddhaId: buddhaId}).
+		FirstOrCreate(ctx, &buddhaFollow)
 	if res.Error != nil {
 		return res.Error
 	}
@@ -54,12 +54,27 @@ func (b *Buddha) WatchBuddha(ctx context.Context, uid, buddhaId uint64) error {
 
 	err := facades.MustGormDB(ctx, b.logger).
 		Unscoped().
-		Where(map[string]interface{}{enum.FieldId: userWatchedBuddha.Id}).
-		Updates(map[string]interface{}{enum.FieldLastWatchedAt: time.Now().Unix(), enum.FieldDeletedAt: 0}).
+		Where(map[string]interface{}{enum.FieldId: buddhaFollow.Id}).
+		Updates(map[string]interface{}{enum.FieldWatchedAt: time.Now().Unix(), enum.FieldDeletedAt: 0}).
 		Error
 	if err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func (b *Buddha) UnwatchBuddha(ctx context.Context, userId, buddhaId uint64) error {
+	err := facades.MustGormDB(ctx, b.logger).
+		Where(&datamodels.BuddhaFollow{UserId: userId, BuddhaId: buddhaId}).
+		Delete(&datamodels.BuddhaFollow{}).
+		Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (b *Buddha) PageUserWatchedBuddha(ctx context.Context, queryStream *optionstream.QueryStream) ([]*datamodels.Buddha, error) {
+	return nil, nil
 }

@@ -14,6 +14,7 @@ type Config struct {
 	*Log `json:"log"`
 	*DB	`json:"db"`
 	*Redis `json:"redis"`
+	*Encrypt `json:"encrypt"`
 
 	loadFile string
 	reloadInterval time.Duration
