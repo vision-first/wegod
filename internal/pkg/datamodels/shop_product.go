@@ -1,6 +1,8 @@
 package datamodels
 
-import "github.com/vision-first/wegod/internal/pkg/db"
+import (
+	"github.com/995933447/dbdriverutil/field"
+)
 
 const (
 	ProductTypeReal = iota
@@ -17,7 +19,7 @@ type ShopProduct struct {
 	BaseModel
 	Name string `json:"name"`
 	CategoryId uint64 `json:"category_id"`
-	MainImages db.Strings `json:"main_images"`
+	MainImages field.Strings `json:"main_images"`
 	Desc string `json:"desc"`
 	ProductType uint32 `json:"product_type"`
 	DeliveryType uint32 `json:"delivery_type"`

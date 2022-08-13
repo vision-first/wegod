@@ -35,3 +35,9 @@ func (q *OptStreamQuery) Query(ctx context.Context, limit, offset int64, list in
 	return nil
 }
 
+func MakeOnSelectColumnsOptHandler(db *gorm.DB) func([]string) error {
+	return func(columns []string) error {
+		db.Select(columns)
+		return nil
+	}
+}

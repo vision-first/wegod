@@ -1,7 +1,7 @@
 package datamodels
 
 import (
-	"github.com/vision-first/wegod/internal/pkg/db"
+	"github.com/995933447/dbdriverutil/field"
 )
 
 type UserPray struct {
@@ -9,5 +9,5 @@ type UserPray struct {
 	UserId uint64 `json:"user_id" gorm:"type:index"`
 	BuddhaId uint64 `json:"buddha_id" gorm:"type:index"`
 	Content string `json:"content"`
-	PrayPropIds db.Uint64s `json:"prop_ids" gorm:"type:json"`
+	PrayPropIds field.Uint64s `json:"prop_ids" gorm:"type:json"`
 }

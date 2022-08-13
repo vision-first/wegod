@@ -17,6 +17,9 @@ require (
 )
 
 require (
+	github.com/995933447/dbdriverutil v0.0.0-20220813100604-0b2b48ec5796 // indirect
+	github.com/995933447/dbutil-go v0.0.0-20220812085233-1b6011082e9c // indirect
+	github.com/995933447/reflectutil v0.0.0-20220810030306-b90b9c0972cf // indirect
 	github.com/995933447/stringhelper-go v0.0.0-20220806171918-329b8bac9af8 // indirect
 	github.com/995933447/structfieldconstgen v0.0.0-20220806190831-96c8b5689b38 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect

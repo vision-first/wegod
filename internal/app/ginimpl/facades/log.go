@@ -68,7 +68,7 @@ func NewGinSimpleTraceFormatter() *GinSimpleTraceFormatter {
 
 func (f *GinSimpleTraceFormatter) Sprintf(ctx context.Context, level log.Level, stdoutColor print.Color, format string, args ...interface{}) (string, error) {
 	if ginCtx, ok := ctx.(*gin.Context); ok {
-		if traceCtx, ok := ginCtx.Get(enum.GinCtxKeySimpleTraceCtx); ok {
+		if traceCtx, ok := ginCtx.Get(enums.GinCtxKeySimpleTraceCtx); ok {
 			return f.fmt.Sprintf(traceCtx.(*simpletracectx.Context), level, stdoutColor, format, args...)
 		}
 	}

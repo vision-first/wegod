@@ -19,7 +19,7 @@ func Trace(ctx *gin.Context) {
 		spanId = ctx.GetHeader(header.HeaderSimpleTraceSpanId)
 	}
 
-	ctx.Set(enum.GinCtxKeySimpleTraceCtx, simpletracectx.New(config.Conf.App.AppName, ctx, traceId, spanId))
+	ctx.Set(enums.GinCtxKeySimpleTraceCtx, simpletracectx.New(config.Conf.App.AppName, ctx, traceId, spanId))
 
 	ctx.Next()
 
@@ -27,7 +27,7 @@ func Trace(ctx *gin.Context) {
 		return
 	}
 
-	if simpleTraceCtxForAnyType, ok := ctx.Get(enum.GinCtxKeySimpleTraceCtx); ok {
+	if simpleTraceCtxForAnyType, ok := ctx.Get(enums.GinCtxKeySimpleTraceCtx); ok {
 		traceCtx := simpleTraceCtxForAnyType.(*simpletracectx.Context)
 		ctx.Header(header.HeaderSimpleTraceId, traceCtx.GetTraceId())
 		ctx.Header(header.HeaderSimpleTraceSpanId, traceCtx.GetSpanId())

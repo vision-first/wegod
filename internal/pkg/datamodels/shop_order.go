@@ -1,6 +1,8 @@
 package datamodels
 
-import "github.com/vision-first/wegod/internal/pkg/db"
+import (
+	"github.com/995933447/dbdriverutil/field"
+)
 
 const (
 	OrderStatusNotPay = iota
@@ -18,7 +20,7 @@ type ShopOrder struct {
 	UserId uint64 `json:"user_id" gorm:"index"`
 	ProductId uint64 `json:"product_id" gorm:"index:index"`
 	ProductNameSnapshot string `json:"product_name_snapshot"`
-	ProductMainImagesSnapshot db.Strings `json:"product_main_images_snapshot"`
+	ProductMainImagesSnapshot field.Strings `json:"product_main_images_snapshot"`
 	Price uint32 `json:"price"`
 	DeliveryTypeSnapshot uint32 `json:"delivery_type_snapshot"`
 	ProductTypeSnapshot uint32 `json:"product_type_snapshot"`

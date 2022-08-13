@@ -4,7 +4,7 @@ import (
 	"errors"
 	"github.com/995933447/apperrdef"
 	"github.com/gin-gonic/gin"
-	"github.com/vision-first/wegod/internal/app/ginimpl/enum"
+	"github.com/vision-first/wegod/internal/app/ginimpl/enums"
 	"github.com/vision-first/wegod/internal/app/ginimpl/facades"
 	"github.com/vision-first/wegod/internal/app/ginimpl/http/response"
 	"github.com/vision-first/wegod/internal/pkg/api"
@@ -22,7 +22,7 @@ type ApiContext struct {
 var _ api.Context = (*ApiContext)(nil)
 
 func NewApiContext(ctx *gin.Context) *ApiContext {
-	authForInterface, ok := ctx.Get(enum.GinCtxKeyAuth)
+	authForInterface, ok := ctx.Get(enums.GinCtxKeyAuth)
 	apiCtx := &ApiContext{
 		ginCtx: ctx,
 	}

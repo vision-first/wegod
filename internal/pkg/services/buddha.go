@@ -8,6 +8,7 @@ import (
 	"github.com/vision-first/wegod/internal/pkg/db/enum"
 	"github.com/vision-first/wegod/internal/pkg/db/mysql/orms/gormimpl"
 	"github.com/vision-first/wegod/internal/pkg/facades"
+	"github.com/vision-first/wegod/internal/pkg/queryoptions"
 	"gorm.io/gorm/clause"
 	"time"
 )
@@ -23,18 +24,23 @@ func NewBuddha(logger *log.Logger) *Buddha {
 }
 
 func (b *Buddha) PageBuddha(ctx context.Context, queryStream *optionstream.QueryStream) ([]*datamodels.Buddha, *optionstream.Pagination, error) {
-	var list []*datamodels.Buddha
+	var BuddhaDOs []*datamodels.Buddha
+
 	db := facades.MustGormDB(ctx, b.logger).Order(clause.OrderByColumn{Column: clause.Column{Name: enum.FieldId}, Desc: true})
-	pagination, err := optionstream.NewQueryStreamProcessor(queryStream).PaginateFrom(ctx, gormimpl.NewOptStreamQuery(db), &list)
+
+	optProcessor := optionstream.NewQueryStreamProcessor(queryStream)
+	optProcessor.OnStringList(queryoptions.SelectColumns, gormimpl.MakeOnSelectColumnsOptHandler(db))
+	pagination, err := optProcessor.PaginateFrom(ctx, gormimpl.NewOptStreamQuery(db), &BuddhaDOs)
 	if err != nil {
 		b.logger.Error(ctx, err)
 		return nil, nil, err
 	}
-	return list, pagination, nil
+
+	return BuddhaDOs, pagination, nil
 }
 
 func (b *Buddha) WatchBuddha(ctx context.Context, userId, buddhaId uint64) error {
-	buddhaFollow := datamodels.BuddhaFollow {
+	buddhaFollowDO := datamodels.BuddhaFollow {
 		UserId: userId,
 		BuddhaId: buddhaId,
 		WatchedAt: time.Now().Unix(),
@@ -42,7 +48,7 @@ func (b *Buddha) WatchBuddha(ctx context.Context, userId, buddhaId uint64) error
 	res := facades.MustGormDB(ctx, b.logger).
 		Unscoped().
 		Where(&datamodels.BuddhaFollow{UserId: userId, BuddhaId: buddhaId}).
-		FirstOrCreate(ctx, &buddhaFollow)
+		FirstOrCreate(ctx, &buddhaFollowDO)
 	if res.Error != nil {
 		return res.Error
 	}
@@ -54,7 +60,7 @@ func (b *Buddha) WatchBuddha(ctx context.Context, userId, buddhaId uint64) error
 
 	err := facades.MustGormDB(ctx, b.logger).
 		Unscoped().
-		Where(map[string]interface{}{enum.FieldId: buddhaFollow.Id}).
+		Where(map[string]interface{}{enum.FieldId: buddhaFollowDO.Id}).
 		Updates(map[string]interface{}{enum.FieldWatchedAt: time.Now().Unix(), enum.FieldDeletedAt: 0}).
 		Error
 	if err != nil {

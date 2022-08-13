@@ -1,5 +1,9 @@
 github.com/995933447/apperrdef v0.0.0-20220802093624-9e18dad35483 h1:Pv6yIfVYE95ENKFavaG1/sxMiLgekb0rPLmCJpzuXeI=
 github.com/995933447/apperrdef v0.0.0-20220802093624-9e18dad35483/go.mod h1:HksRDNPjX88YmIpu9tzXJFC0IzNLVGmgv+Xm1GpE1dI=
+github.com/995933447/dbdriverutil v0.0.0-20220813100604-0b2b48ec5796 h1:U0vQ7TxUQCJJLlNTGxGiBHVUBqnkGoWvqWdSWMy8I70=
+github.com/995933447/dbdriverutil v0.0.0-20220813100604-0b2b48ec5796/go.mod h1:qJiyqrKB4JOwDKEo3MwlMfVvvbz/+8dXExp4crgR1tY=
+github.com/995933447/dbutil-go v0.0.0-20220812085233-1b6011082e9c h1:I8ffVpZSMzHbgPMd+/tdp51kaHh+RCzLHEG+R5loUjA=
+github.com/995933447/dbutil-go v0.0.0-20220812085233-1b6011082e9c/go.mod h1:KBxosY5sZljjxeK0JqIAG1MmwtDwxUOBF1/JwGZov/w=
 github.com/995933447/log-go v0.0.0-20220731153256-b5973c9e2e5c h1:wCDQ6Q2roaqucvz+AC+FyFSZUwfsGHCm5XF/UpF4vfs=
 github.com/995933447/log-go v0.0.0-20220731153256-b5973c9e2e5c/go.mod h1:VtUKRJydLOzba3STSgfNymoII56hCdAlo9trWD601fA=
 github.com/995933447/log-go v0.0.0-20220802100729-3a217566d0f5 h1:MF+O85Y/wcLzdFokgEhKU5fjcoSBVzRlU7ioe3aikRc=
@@ -14,6 +18,8 @@ github.com/995933447/redisgroup v0.0.0-20220802141113-c86d831ab557 h1:k8momKh64X
 github.com/995933447/redisgroup v0.0.0-20220802141113-c86d831ab557/go.mod h1:inGhAmSo5nOL3zj1Wa30D0VZFaoXPJMr6Qwz8Bt1Y58=
 github.com/995933447/redisgroup v0.0.0-20220802145701-7a43cc9c8294 h1:eA+JHelnGoU5JArJJZOiqueA5an2NW1LbD6NBhKKabY=
 github.com/995933447/redisgroup v0.0.0-20220802145701-7a43cc9c8294/go.mod h1:inGhAmSo5nOL3zj1Wa30D0VZFaoXPJMr6Qwz8Bt1Y58=
+github.com/995933447/reflectutil v0.0.0-20220810030306-b90b9c0972cf h1:8i6Pz2IfCPIJ3CAvLZ6/PlHIzaVFgzXZRsL4G+LdCqA=
+github.com/995933447/reflectutil v0.0.0-20220810030306-b90b9c0972cf/go.mod h1:Tkho/yq1vuQTuZSuacoXxDkMvU1qtjjbAsB6VEamfa0=
 github.com/995933447/simpletrace v0.0.0-20220731143730-10f77a6d7381/go.mod h1:NZRvYDThUkT5Lrr+5/NyXtQC2RgKgGQCgkr9yQw6cV4=
 github.com/995933447/simpletrace v0.0.0-20220731150137-e9c6219dd21d h1:LNm48leY4tHFUSXUWBXR1OHP6jlT5WJJSniSGE6y9n0=
 github.com/995933447/simpletrace v0.0.0-20220731150137-e9c6219dd21d/go.mod h1:3EZ4DZlNwShFb/WN6py+7oARLavgvAq/JhMANPn2bmk=
