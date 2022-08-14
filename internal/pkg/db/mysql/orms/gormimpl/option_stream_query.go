@@ -22,14 +22,14 @@ func (q *OptStreamQuery) Hit(ctx context.Context, limit, offset int64, list inte
 	if err := db.Count(&count).Error; err != nil {
 		return 0, err
 	}
-	if err := db.Limit(int(limit)).Offset(int(offset)).Find(list).Error; err != nil {
+	if err := db.Limit(int(limit)).Offset(int(offset)).Scan(list).Error; err != nil {
 		return 0, err
 	}
 	return count, nil
 }
 
 func (q *OptStreamQuery) Query(ctx context.Context, limit, offset int64, list interface{}) error {
-	if err := q.db.WithContext(ctx).Limit(int(limit)).Offset(int(offset)).Find(list).Error; err != nil {
+	if err := q.db.WithContext(ctx).Limit(int(limit)).Offset(int(offset)).Scan(list).Error; err != nil {
 		return err
 	}
 	return nil

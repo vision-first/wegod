@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/995933447/std-go/scan"
 	"github.com/vision-first/wegod/tools/autogen/apigen"
+	"github.com/vision-first/wegod/tools/autogen/servicegen"
 )
 
 func GenApi() {
@@ -16,5 +17,18 @@ func GenApi() {
 	)
 	if err != nil {
 		logger.Error(NewCtx(), err)
+		panic(err)
+	}
+}
+
+func GenService() {
+	srv := scan.OptStr("s")
+	err := servicegen.GenSrv(
+		srv,
+		"../internal/pkg/services",
+	)
+	if err != nil {
+		logger.Error(NewCtx(), err)
+		panic(err)
 	}
 }

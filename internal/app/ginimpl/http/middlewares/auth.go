@@ -15,20 +15,20 @@ func Auth(ctx *gin.Context) {
 
 	if len(token) == 0 {
 		// 未登录或非法登录
-		response.EndFailedJsonWithErr(ctx, apperrdef.NewError(errs.ErrCodeUnauthorized))
+		response.EndFailedJsonWithErr(ctx, apperrdef.NewErr(errs.ErrCodeUnauthorized))
 		return
 	}
 
 	_, err, expired := encrypt.NewJWT(config.Conf.Encrypt.Jwt.SigningKey).ParseToken(token)
 	if err != nil {
 		facades.MustLogger().Error(ctx, err)
-		response.EndFailedJsonWithErr(ctx, apperrdef.NewError(errs.ErrCodeUnauthorized))
+		response.EndFailedJsonWithErr(ctx, apperrdef.NewErr(errs.ErrCodeUnauthorized))
 		return
 	}
 
 	if expired {
 		facades.MustLogger().Error(ctx, err)
-		response.EndFailedJsonWithErr(ctx, apperrdef.NewErrorWithMsg(errs.ErrCodeUnauthorized, "登录已过期"))
+		response.EndFailedJsonWithErr(ctx, apperrdef.NewErrWithMsg(errs.ErrCodeUnauthorized, "登录已过期"))
 		return
 	}
 

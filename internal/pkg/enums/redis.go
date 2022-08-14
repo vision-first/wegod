@@ -1,6 +1,14 @@
 package enums
 
+import "fmt"
+
 const (
-	RedisKeyTempAuthCertificate = "tempAuthCertificate:%s"
+	RedisKeyPhoneVerifyCode = "phone:%s_verifyCode"
 )
+
+func MakeRedisKeyPhoneVerifyCode(phone string) string {
+	return fmt.Sprintf(RedisKeyPhoneVerifyCode, phone)
+}
+
+
 

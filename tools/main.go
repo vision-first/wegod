@@ -2,7 +2,11 @@ package main
 
 import (
 	"fmt"
+	"github.com/995933447/log-go"
+	"github.com/995933447/log-go/impls/loggerwriters"
 	"github.com/995933447/std-go/scan"
+	"github.com/vision-first/wegod/internal/pkg/config"
+	"github.com/vision-first/wegod/internal/pkg/facades"
 	"os"
 	"path"
 	"strings"
@@ -70,7 +74,24 @@ func Run() {
 	handler()
 }
 
+func init() {
+	loggerWriter := loggerwriters.NewFileLoggerWriter(
+		config.Conf.Log.Dir,
+		config.Conf.Log.MaxFileSize,
+		10,
+		facades.CheckTimeToOpenNewFileHandlerForFileLogger(),
+		100000,
+	)
+	go func() {
+		if err := loggerWriter.Loop(); err != nil {
+			panic(err)
+		}
+	}()
+	logger = log.NewLogger(loggerWriter)
+}
+
 func main()  {
 	Register("GenApi", "-a Api -m Method", GenApi)
+	Register("GenService", "-s Service", GenService)
 	Run()
 }

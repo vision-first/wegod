@@ -3,8 +3,8 @@ module github.com/vision-first/wegod
 go 1.17
 
 require (
-	github.com/995933447/apperrdef v0.0.0-20220802093624-9e18dad35483
-	github.com/995933447/log-go v0.0.0-20220802160244-9de83440e290
+	github.com/995933447/apperrdef v0.0.0-20220814145131-1e7f1264def9
+	github.com/995933447/log-go v0.0.0-20220806092608-7f0a23277e78
 	github.com/995933447/optionstream v0.0.0-20220803074316-dd787a7cc8c9
 	github.com/995933447/redisgroup v0.0.0-20220802145701-7a43cc9c8294
 	github.com/995933447/simpletrace v0.0.0-20220731150137-e9c6219dd21d

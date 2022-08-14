@@ -23,22 +23,24 @@ func (b *Buddha) PageBuddha(ctx api.Context, req *dtos.PageBuddhaReq) (*dtos.Pag
 	var (
 		resp dtos.PageBuddhaResp
 		err error
-		buddhaDataModels []*datamodels.Buddha
+		buddhaDOs []*datamodels.Buddha
 	)
-	buddhaDataModels, resp.Pagination, err = services.NewBuddha(b.logger).
+	buddhaDOs, resp.Pagination, err = services.NewBuddha(b.logger).
 		PageBuddha(ctx, optionstream.NewQueryStream(nil, req.Limit, req.Offset))
 	if err != nil {
 		b.logger.Error(ctx, err)
 		return nil, err
 	}
-	for _, buddhaDataModel := range buddhaDataModels {
+
+	for _, buddhaDO := range buddhaDOs {
 		resp.List = append(resp.List, &dtos.Buddha{
-			Id: buddhaDataModel.Id,
-			Name: buddhaDataModel.Name,
-			Image: buddhaDataModel.Image,
-			Sort: buddhaDataModel.Sort,
+			Id: buddhaDO.Id,
+			Name: buddhaDO.Name,
+			Image: buddhaDO.Image,
+			Sort: buddhaDO.Sort,
 		})
 	}
+
 	return &resp, nil
 }
 
@@ -79,9 +81,26 @@ func (b *Buddha) UnwatchBuddha(ctx api.Context, req *dtos.UnwatchBuddhaReq) (*dt
 
 
 func (b *Buddha) PageUserWatchedBuddha(ctx api.Context, req *dtos.PageUserWatchedBuddhaReq) (*dtos.PageUserWatchedBuddhaResp, error) {
-    var resp dtos.PageUserWatchedBuddhaResp
+	var (
+		resp dtos.PageUserWatchedBuddhaResp
+		buddhaDOs []*datamodels.Buddha
+		err error
+	)
+	buddhaDOs, resp.Pagination, err = services.NewBuddha(b.logger).
+		PageUserWatchedBuddha(ctx, optionstream.NewQueryStream(req.QueryOptions, req.Limit, req.Offset))
+	if err != nil {
+		b.logger.Error(ctx, err)
+		return nil, err
+	}
 
-    // TODO.Write your logic
+	for _, buddhaDO := range buddhaDOs {
+		resp.List = append(resp.List, &dtos.Buddha{
+			Id: buddhaDO.Id,
+			Name: buddhaDO.Name,
+			Image: buddhaDO.Image,
+			Sort: buddhaDO.Sort,
+		})
+	}
 
     return &resp, nil
 }

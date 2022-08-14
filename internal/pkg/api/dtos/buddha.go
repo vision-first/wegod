@@ -34,7 +34,12 @@ type UnwatchBuddhaResp struct {
 }
 
 type PageUserWatchedBuddhaReq struct {
+	QueryOptions []*optionstream.Option `json:"query_options"`
+	Limit        int64                  `json:"limit"`
+	Offset       int64                  `json:"offset"`
 }
 
 type PageUserWatchedBuddhaResp struct {
+	List []*Buddha
+	Pagination *optionstream.Pagination
 }

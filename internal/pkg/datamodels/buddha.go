@@ -7,3 +7,7 @@ type Buddha struct {
 	Sort uint32 `json:"sort"`
 	Remark string `json:"remark" gorm:"type:varchar"`
 }
+
+func (Buddha) TableName() string  {
+	return "buddhas"
+}
