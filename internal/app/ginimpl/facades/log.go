@@ -20,17 +20,22 @@ var (
 )
 
 func MustLogger() *log.Logger {
-	if logger == nil {
-		newLoggerMu.Lock()
-		defer newLoggerMu.Unlock()
-		if logger == nil {
-			switch config.Conf.Log.Driver {
-			case config.LogDriverFile:
-				logger = log.NewLogger(MustNewFileLoggerWriter())
-			default:
-				logger = log.NewLogger(MustNewFileLoggerWriter())
-			}
-		}
+	if logger != nil {
+		return logger
+	}
+
+	newLoggerMu.Lock()
+	defer newLoggerMu.Unlock()
+
+	if logger != nil {
+		return logger
+	}
+
+	switch config.Conf.Log.Driver {
+	case config.LogDriverFile:
+		logger = log.NewLogger(MustNewFileLoggerWriter())
+	default:
+		logger = log.NewLogger(MustNewFileLoggerWriter())
 	}
 
 	return logger

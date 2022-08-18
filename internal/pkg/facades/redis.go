@@ -13,15 +13,22 @@ var (
 )
 
 func RedisGroup(logger *log.Logger) *redisgroup.Group {
-	if redisGroup == nil {
-		newRedisGroupMu.Lock()
-		defer newRedisGroupMu.Unlock()
-		var redisNodes []*redisgroup.Node
-		for _, nodeConfig := range config.Conf.Redis.Nodes {
-			redisNodes = append(redisNodes, redisgroup.NewNode(nodeConfig.Host, nodeConfig.Port, nodeConfig.Password))
-		}
-		redisGroup = redisgroup.NewGroup(redisNodes, logger)
+	if redisGroup != nil {
+		return redisGroup
 	}
+
+	newRedisGroupMu.Lock()
+	defer newRedisGroupMu.Unlock()
+
+	if redisGroup != nil {
+		return redisGroup
+	}
+
+	var redisNodes []*redisgroup.Node
+	for _, nodeConfig := range config.Conf.Redis.Nodes {
+		redisNodes = append(redisNodes, redisgroup.NewNode(nodeConfig.Host, nodeConfig.Port, nodeConfig.Password))
+	}
+	redisGroup = redisgroup.NewGroup(redisNodes, logger)
 
 	return redisGroup
 }
