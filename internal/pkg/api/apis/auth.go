@@ -33,7 +33,7 @@ func (a *Auth) Register(ctx api.Context, req *dtos.RegisterReq) (*dtos.RegisterR
 	}
 
 	if !notExist {
-		err = apperrdef.NewErr(errs.ErrPhoneBeenRegisteredByOtherUser)
+		err = apperrdef.NewErr(errs.ErrCodePhoneBeenRegisteredByOtherUser)
 		a.logger.Error(ctx, err)
 		return nil, a.TransErr(err)
 	}
@@ -46,7 +46,7 @@ func (a *Auth) Register(ctx api.Context, req *dtos.RegisterReq) (*dtos.RegisterR
 	}
 
 	if !ok {
-		err = apperrdef.NewErr(errs.ErrBadPhoneVerifyCode)
+		err = apperrdef.NewErr(errs.ErrCodeBadPhoneVerifyCode)
 		a.logger.Error(ctx, err)
 		return nil, a.TransErr(err)
 	}
@@ -89,7 +89,7 @@ func (a *Auth) Login(ctx api.Context, req *dtos.LoginReq) (*dtos.LoginResp, erro
 		}
 
 		if !ok {
-			err = apperrdef.NewErr(errs.ErrBadPhoneVerifyCode)
+			err = apperrdef.NewErr(errs.ErrCodeBadPhoneVerifyCode)
 			a.logger.Error(ctx, err)
 			return nil, a.TransErr(err)
 		}
@@ -101,7 +101,7 @@ func (a *Auth) Login(ctx api.Context, req *dtos.LoginReq) (*dtos.LoginResp, erro
 		}
 
 		if !ok {
-			err = apperrdef.NewErr(errs.ErrPasswordNotCorrect)
+			err = apperrdef.NewErr(errs.ErrCodePasswordNotCorrect)
 			a.logger.Error(ctx, err)
 			return nil, a.TransErr(err)
 		}
@@ -126,7 +126,7 @@ func (a *Auth) SendVerifyCodeForRegister(ctx api.Context, req *dtos.SendVerifyCo
 	}
 
 	if !notExist {
-		err = apperrdef.NewErr(errs.ErrPhoneBeenRegisteredByOtherUser)
+		err = apperrdef.NewErr(errs.ErrCodePhoneBeenRegisteredByOtherUser)
 		a.logger.Error(ctx, err)
 		return nil, a.TransErr(err)
 	}

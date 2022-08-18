@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/995933447/apperrdef v0.0.0-20220814145131-1e7f1264def9
 	github.com/995933447/log-go v0.0.0-20220806092608-7f0a23277e78
-	github.com/995933447/optionstream v0.0.0-20220803074316-dd787a7cc8c9
+	github.com/995933447/optionstream v0.0.0-20220816081607-a125989b4cd9
 	github.com/995933447/redisgroup v0.0.0-20220802145701-7a43cc9c8294
 	github.com/995933447/simpletrace v0.0.0-20220731150137-e9c6219dd21d
 	github.com/995933447/std-go v0.0.0-20220806175833-ab3496c0b696
@@ -17,9 +17,11 @@ require (
 )
 
 require (
-	github.com/995933447/dbdriverutil v0.0.0-20220813100604-0b2b48ec5796 // indirect
+	github.com/995933447/dbdriverutil v0.0.0-20220815160147-6e3336599c28 // indirect
 	github.com/995933447/dbutil-go v0.0.0-20220812085233-1b6011082e9c // indirect
-	github.com/995933447/reflectutil v0.0.0-20220810030306-b90b9c0972cf // indirect
+	github.com/995933447/elemutil v0.0.0-20220816160009-50f923970fdd // indirect
+	github.com/995933447/eventobserver v0.0.0-20220815090930-e7c3e3f0b5d1 // indirect
+	github.com/995933447/reflectutil v0.0.0-20220816152525-eaa34e263589 // indirect
 	github.com/995933447/stringhelper-go v0.0.0-20220806171918-329b8bac9af8 // indirect
 	github.com/995933447/structfieldconstgen v0.0.0-20220806190831-96c8b5689b38 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
@@ -40,6 +42,7 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/palantir/stacktrace v0.0.0-20161112013806-78658fd2d177 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.2 // indirect
+	github.com/shopspring/decimal v1.3.1 // indirect
 	github.com/ugorji/go/codec v1.2.7 // indirect
 	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
 	golang.org/x/net v0.0.0-20220802222814-0bcc04d9c69b // indirect
@@ -47,6 +50,7 @@ require (
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
+	gopkg.in/mgo.v2 v2.0.0-20190816093944-a6b53ec6cb22 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gorm.io/plugin/soft_delete v1.2.0 // indirect
 )

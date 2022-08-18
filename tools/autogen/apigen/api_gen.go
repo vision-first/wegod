@@ -133,9 +133,9 @@ import (
 
 func checkExistApiOrMethodAndGetCodePath(apiModule, apiMethod, apiPkgCodePath string) (existApiStruct, existApiMethod bool, codeFilePath string, err error) {
 	apiPkgCodePath = strings.TrimRight(apiPkgCodePath, "/")
-	apiImplsPkgPath := apiPkgCodePath + "/apis"
+	apiImplsPkgCodePath := apiPkgCodePath + "/apis"
 
-	apiImplsPkgMap, err := parser.ParseDir(token.NewFileSet(), apiImplsPkgPath, nil, 0)
+	apiImplsPkgMap, err := parser.ParseDir(token.NewFileSet(), apiImplsPkgCodePath, nil, 0)
 	if err != nil {
 		return
 	}
@@ -175,7 +175,7 @@ func checkExistApiOrMethodAndGetCodePath(apiModule, apiMethod, apiPkgCodePath st
 	}
 
 	if codeFilePath == "" {
-		codeFilePath = apiImplsPkgPath + "/" + stringhelper.Snake(apiModule) + ".go"
+		codeFilePath = apiImplsPkgCodePath + "/" + stringhelper.Snake(apiModule) + ".go"
 	}
 
 	return
@@ -272,9 +272,9 @@ func genApiDTOs(apiModule, apiMethod, apiPkgCodePath string) error {
 }
 
 func checkExistDTOsAndGetCodeFilePath(apiModule, apiMethod, apiPkgCodePath string) (existReqDTO, existRespDTO bool, codeFilePath string, err error) {
-	dtosPkgPath := apiPkgCodePath + "/dtos"
+	dtosCodePkgPath := apiPkgCodePath + "/dtos"
 
-	dtosPkgMap, err := parser.ParseDir(token.NewFileSet(), dtosPkgPath, nil,0)
+	dtosPkgMap, err := parser.ParseDir(token.NewFileSet(), dtosCodePkgPath, nil,0)
 	if err != nil {
 		return
 	}

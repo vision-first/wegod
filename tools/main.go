@@ -93,5 +93,6 @@ func init() {
 func main()  {
 	Register("GenApi", "-a Api -m Method", GenApi)
 	Register("GenService", "-s Service", GenService)
+	Register("GenServicePageQuery", "-s Service -m Method -mod DataModel", GenServicePageQuery)
 	Run()
 }

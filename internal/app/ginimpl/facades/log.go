@@ -8,7 +8,7 @@ import (
 	simpletracectx "github.com/995933447/simpletrace/context"
 	"github.com/995933447/std-go/print"
 	"github.com/gin-gonic/gin"
-	"github.com/vision-first/wegod/internal/app/ginimpl/enum"
+	"github.com/vision-first/wegod/internal/app/ginimpl/enums"
 	"github.com/vision-first/wegod/internal/pkg/config"
 	"github.com/vision-first/wegod/internal/pkg/facades"
 	"sync"

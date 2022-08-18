@@ -9,7 +9,7 @@ const (
     return &resp, nil
 }`
 	apiStructTmpl = `type {{.ApiModule}} struct {
-	logger log.Logger
+	logger *log.Logger
 }`
 	apiReqDTOTmpl = `type {{.ApiMethod}}Req struct {
 }`

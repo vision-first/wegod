@@ -6,7 +6,8 @@ import (
 	. "github.com/vision-first/wegod/internal/app/ginimpl/providers"
 	"github.com/vision-first/wegod/internal/pkg/boot"
 	. "github.com/vision-first/wegod/internal/pkg/boot/providers"
-	"github.com/vision-first/wegod/internal/pkg/datamodels"
+	"github.com/vision-first/wegod/internal/pkg/models"
+	"github.com/vision-first/wegod/internal/pkg/event"
 )
 
 func RunServer() error {
@@ -26,21 +27,24 @@ func RunServer() error {
 func bootServiceProviders(srv *gin.Engine) error {
 	bootstrapper := boot.NewBootstrapper([]boot.ServiceProvider{
 		NewMigrateDataModelProvider([]interface{}{
-			&datamodels.Buddha{},
-			&datamodels.BuddhaFollow{},
-			&datamodels.BuddhaWorship{},
-			&datamodels.BuddhaWorshipProp{},
-			&datamodels.User{},
-			&datamodels.UserPray{},
-			&datamodels.UserDonationDailyStat{},
-			&datamodels.UserDonationRecord{},
-			&datamodels.PrayProp{},
-			&datamodels.ShopProductCategory{},
-			&datamodels.ShopProduct{},
-			&datamodels.ShopOrder{},
-			&datamodels.Music{},
-			&datamodels.PostCategory{},
-			&datamodels.Post{},
+			&models.Buddha{},
+			&models.BuddhaFollow{},
+			&models.BuddhaWorship{},
+			&models.BuddhaWorshipProp{},
+			&models.User{},
+			&models.UserPray{},
+			&models.UserDonationDailyStat{},
+			&models.UserDonationRecord{},
+			&models.PrayProp{},
+			&models.ShopProductCategory{},
+			&models.ShopProduct{},
+			&models.ShopOrder{},
+			&models.Music{},
+			&models.PostCategory{},
+			&models.Post{},
+		}, facades.MustLogger()),
+		NewEventProvider(map[string][]*event.Listener{
+
 		}, facades.MustLogger()),
 		NewHttpRouterProvider(srv),
 	})

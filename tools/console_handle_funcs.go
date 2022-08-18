@@ -23,8 +23,26 @@ func GenApi() {
 
 func GenService() {
 	srv := scan.OptStr("s")
-	err := servicegen.GenSrv(
+	err := servicegen.GenService(
 		srv,
+		"../internal/pkg/services",
+	)
+	if err != nil {
+		logger.Error(NewCtx(), err)
+		panic(err)
+	}
+}
+
+func GenServicePageQuery() {
+	srv := scan.OptStr("s")
+	method := scan.OptStr("m")
+	dataModel := scan.OptStr("mod")
+	err := servicegen.GenServiceOptionStreamPageQuery(
+		srv,
+		method,
+		dataModel,
+		"github.com/vision-first/wegod/internal/pkg/datamodel/models",
+		"github.com/vision-first/wegod/internal/pkg/facades",
 		"../internal/pkg/services",
 	)
 	if err != nil {

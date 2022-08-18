@@ -7,6 +7,7 @@ import (
 	"github.com/vision-first/wegod/internal/app/ginimpl/http/middlewares"
 	"github.com/vision-first/wegod/internal/app/ginimpl/http/response"
 	"github.com/vision-first/wegod/internal/pkg/api/apis"
+	"github.com/vision-first/wegod/internal/pkg/boot"
 )
 
 type HttpRouterProvider struct {
@@ -18,6 +19,8 @@ func NewHttpRouterProvider(srv *gin.Engine) *HttpRouterProvider {
 		srv: srv,
 	}
 }
+
+var _ boot.ServiceProvider = (*HttpRouterProvider)(nil)
 
 func (p *HttpRouterProvider) Boot() error {
 	p.srv.Use(gin.Recovery())

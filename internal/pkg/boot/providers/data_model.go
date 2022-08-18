@@ -3,6 +3,7 @@ package providers
 import (
 	"context"
 	"github.com/995933447/log-go"
+	"github.com/vision-first/wegod/internal/pkg/boot"
 	"github.com/vision-first/wegod/internal/pkg/facades"
 )
 
@@ -11,6 +12,8 @@ type MigrateDataModelProvider struct {
 	logger *log.Logger
 	ctx context.Context
 }
+
+var _ boot.ServiceProvider = (*MigrateDataModelProvider)(nil)
 
 func NewMigrateDataModelProvider(dataModels []interface{}, logger *log.Logger) *MigrateDataModelProvider {
 	return &MigrateDataModelProvider{

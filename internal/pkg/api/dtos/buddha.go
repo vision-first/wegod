@@ -1,7 +1,5 @@
 package dtos
 
-import "github.com/995933447/optionstream"
-
 type Buddha struct {
 	Id uint64 `json:"id"`
 	Name string `json:"name"`
@@ -10,13 +8,12 @@ type Buddha struct {
 }
 
 type PageBuddhaReq struct {
-	Limit int64 `json:"limit"`
-	Offset int64 `json:"offset"`
+	PageQueryReq
 }
 
 type PageBuddhaResp struct {
 	List []*Buddha `json:"list"`
-	Pagination *optionstream.Pagination `json:"pagination"`
+	PageQueryResp
 }
 
 type WatchBuddhaReq struct {
@@ -33,13 +30,66 @@ type UnwatchBuddhaReq struct {
 type UnwatchBuddhaResp struct {
 }
 
-type PageUserWatchedBuddhaReq struct {
-	QueryOptions []*optionstream.Option `json:"query_options"`
-	Limit        int64                  `json:"limit"`
-	Offset       int64                  `json:"offset"`
+type PageUserWatchedBuddhasReq struct {
+	PageBuddhaReq
 }
 
-type PageUserWatchedBuddhaResp struct {
+type PageUserWatchedBuddhasResp struct {
 	List []*Buddha
-	Pagination *optionstream.Pagination
+	PageQueryResp
+}
+
+type CreateBuddhaRentOrderReq struct {
+	RentPackageId uint64
+}
+
+type BuddhaRentOrder struct {
+	OrderSn string
+	BuddhaId uint64
+	RentPackageId uint64
+	Price uint32
+	RentPackageName string
+	RentPackageDesc string
+	Status uint
+}
+
+type CreateBuddhaRentOrderResp struct {
+	Order *BuddhaRentOrder `json:"order"`
+}
+
+type BuddhaRentPackage struct {
+	Id uint64 `json:"id"`
+	Name string `json:"name"`
+	Desc string `json:"desc"`
+	Price uint32 `json:"price"`
+	AvailableDuration uint32 `json:"effective_time"`
+	ShelfStatus int `json:"shelf_status"`
+	BuddhaId uint64 `json:"buddha_id"`
+}
+
+type PageBuddhaRentPackagesReq struct {
+	PageBuddhaReq
+}
+
+type PageBuddhaRentPackagesResp struct {
+	List []*BuddhaRentPackage `json:"list"`
+	PageQueryResp
+}
+
+type PrayToBuddhaReq struct {
+	BuddhaId uint64 `json:"buddha_id"`
+	PrayPropIds []uint64 `json:"pray_prop_ids"`
+	Content string	`json:"content"`
+}
+
+type PrayToBuddhaResp struct {
+}
+
+type WorshipToBuddhaReq struct {
+	BuddhaId uint64
+	WorshipPropId uint64
+	ConsumeUserWorshipPropId uint64
+}
+
+type WorshipToBuddhaResp struct {
 }

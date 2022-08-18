@@ -12,6 +12,10 @@ func NewSMS(logger *log.Logger) *SMS {
 	}
 }
 
+func (s *SMS) TransErr(err error) error {
+	return err
+}
+
 func (s *SMS) SendMsg(phone, msg string) error {
 	return nil
 }
