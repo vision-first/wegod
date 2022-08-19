@@ -4,7 +4,7 @@ const (
 	apiMethodTmpl = `func ({{.ApiModuleAbbreviation}} *{{.ApiModule}}) {{.ApiMethod}}(ctx api.Context, req *dtos.{{.ApiMethod}}Req) (*dtos.{{.ApiMethod}}Resp, error) {
     var resp dtos.{{.ApiMethod}}Resp
 
-    // TODO.Write your logic
+    // TODO.write your logic
 
     return &resp, nil
 }`

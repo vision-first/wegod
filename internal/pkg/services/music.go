@@ -5,8 +5,10 @@ import (
 	"github.com/995933447/log-go"
 	"github.com/995933447/optionstream"
 	"github.com/vision-first/wegod/internal/pkg/datamodel/models"
+	"github.com/vision-first/wegod/internal/pkg/db/enum"
 	"github.com/vision-first/wegod/internal/pkg/db/mysql/orms/gormimpl"
 	"github.com/vision-first/wegod/internal/pkg/facades"
+	"github.com/vision-first/wegod/internal/pkg/queryoptions"
 )
 
 type Music struct {
@@ -26,6 +28,16 @@ func (m *Music) PageMusics(ctx context.Context, queryStream *optionstream.QueryS
 	db := facades.MustGormDB(ctx, m.logger)
 
 	queryStreamProcessor := optionstream.NewQueryStreamProcessor(queryStream)
+	queryStreamProcessor.
+		OnNone(queryoptions.OnShelfStatus, func() error {
+			db.Where(&models.Music{ShelfStatus: models.ShelfStatusOnShelf})
+			return nil
+		}).
+		OnUint64(queryoptions.EqualBuddhaId, func(val uint64) error {
+			db.Where("JSON_CONTAINS(" + enum.FieldBuddhaIds + ", ?)", val)
+			return nil
+		})
+
 	var musicDOs []*models.Music
 	pagination, err := queryStreamProcessor.PaginateFrom(ctx, gormimpl.NewOptStreamQuery(db), &musicDOs)
 	if err != nil {

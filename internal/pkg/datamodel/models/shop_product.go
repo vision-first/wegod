@@ -27,4 +27,6 @@ type ShopProduct struct {
 	InventoryNum uint32 `json:"inventory_num"`
 	SaleNum uint32 `json:"sale_num" gorm:"index"`
 	Price uint32 `json:"price"`
+	OnShelfAt int64 `json:"on_shelf_at"`
+	OffShelfAt int64 `json:"off_shelf_at"`
 }

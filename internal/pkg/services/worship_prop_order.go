@@ -41,6 +41,7 @@ func (p *WorshipPropOrder) CreateOrder(ctx context.Context, userId, worshipPropI
 		PropId: worshipPropId,
 		Sn: bson.NewObjectId().Hex(),
 		PropAvailableDurationSnapshot: worshipPropDO.AvailableDuration,
+		Status: models.OrderStatusNotPay,
 	}
 	err := db.Create(orderDO).Error
 	if err != nil {

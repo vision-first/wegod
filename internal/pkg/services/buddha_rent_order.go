@@ -61,7 +61,7 @@ func (b *BuddhaRentOrder) CreateOrder(ctx context.Context, userId, rentPackageId
 	err := db.Create(orderDO).Error
 	if err != nil {
 		b.logger.Error(ctx, err)
-		return nil, err
+		return nil, b.TransErr(err)
 	}
 
 	return orderDO, nil

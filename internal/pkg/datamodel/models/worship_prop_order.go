@@ -6,4 +6,5 @@ type WorshipPropOrder struct {
 	PropId uint64
 	PropAvailableDurationSnapshot int64
 	Sn string
+	Status int
 }

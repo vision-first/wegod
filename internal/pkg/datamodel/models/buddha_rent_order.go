@@ -11,7 +11,6 @@ type BuddhaRentOrder struct {
 	RentPackageDescSnapshot string
 	PayedAt int64 `json:"payed_at"`
 	EndRentAt int64 `json:"end_rent_at"`
-	PaymentFlowId uint64 `json:"payment_flow_id"`
 	Status uint `json:"status"`
 	Sn string `json:"sn"`
 	Money uint32

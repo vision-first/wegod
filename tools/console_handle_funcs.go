@@ -43,6 +43,7 @@ func GenServicePageQuery() {
 		dataModel,
 		"github.com/vision-first/wegod/internal/pkg/datamodel/models",
 		"github.com/vision-first/wegod/internal/pkg/facades",
+		"github.com/vision-first/wegod/internal/pkg/db/mysql/orms/gormimpl",
 		"../internal/pkg/services",
 	)
 	if err != nil {

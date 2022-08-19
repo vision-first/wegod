@@ -1,14 +1,18 @@
 package services
 
 import (
+	"context"
 	"github.com/995933447/apperrdef"
 	"github.com/995933447/log-go"
+	"github.com/995933447/optionstream"
 	"github.com/995933447/reflectutil"
 	"github.com/vision-first/wegod/internal/pkg/auth"
 	"github.com/vision-first/wegod/internal/pkg/datamodel/models"
+	"github.com/vision-first/wegod/internal/pkg/db/enum"
+	"github.com/vision-first/wegod/internal/pkg/db/mysql/orms/gormimpl"
 	"github.com/vision-first/wegod/internal/pkg/errs"
 	"github.com/vision-first/wegod/internal/pkg/facades"
-	"golang.org/x/net/context"
+	"github.com/vision-first/wegod/internal/pkg/queryoptions"
 	"gorm.io/gorm"
 )
 
@@ -88,4 +92,24 @@ func (u *User) GetUserByPhone(ctx context.Context, phone string) (*models.User, 
 		return nil, u.TransErr(err)
 	}
 	return &userDO, nil
+}
+
+func (u *User) PageUsers(ctx context.Context, queryStream *optionstream.QueryStream) ([]*models.User, *optionstream.Pagination, error) {
+	db := facades.MustGormDB(ctx, u.logger)
+
+	queryStreamProcessor := optionstream.NewQueryStreamProcessor(queryStream)
+	queryStreamProcessor.
+		OnUint64List(queryoptions.InIds, func(val []uint64) error {
+			db.Where(enum.FieldId + " IN ?", val)
+			return nil
+		})
+
+	var userDOs []*models.User
+	pagination, err := queryStreamProcessor.PaginateFrom(ctx, gormimpl.NewOptStreamQuery(db), &userDOs)
+	if err != nil {
+		u.logger.Error(ctx, err)
+		return nil, nil, u.TransErr(err)
+	}
+
+	return userDOs, pagination, nil
 }

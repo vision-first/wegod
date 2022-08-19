@@ -16,4 +16,5 @@ type ShopOrder struct {
 	ProductTypeSnapshot uint32 `json:"product_type_snapshot"`
 	Status uint `json:"status"`
 	ProductPriceSnapshot uint32 `json:"product_price_snapshot"`
+	PayedAt int64 `json:"payed_at"`
 }

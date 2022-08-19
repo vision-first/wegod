@@ -140,7 +140,7 @@ func (b *Buddha) PageUserWatchedBuddhas(ctx context.Context, queryStream *option
 	var buddhas []*models.Buddha
 	pagination, err := queryStreamProcessor.PaginateFrom(ctx, gormimpl.NewOptStreamQuery(db), &buddhas)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, b.TransErr(err)
 	}
 
 	return buddhas, pagination, nil
@@ -164,7 +164,7 @@ func (b *Buddha) PageBuddhaRentPackages(ctx context.Context, queryStream *option
 	pagination, err := queryStreamProcessor.PaginateFrom(ctx, gormimpl.NewOptStreamQuery(db), &rentPackageDOs)
 	if err != nil {
 		b.logger.Error(ctx, err)
-		return nil, nil, err
+		return nil, nil, b.TransErr(err)
 	}
 	return rentPackageDOs, pagination, nil
 }
@@ -178,7 +178,7 @@ func (b *Buddha) PrayToBuddha(ctx context.Context, userId, buddhaId uint64, pray
 	}).Error
 	if err != nil {
 		b.logger.Error(ctx, err)
-		return err
+		return b.TransErr(err)
 	}
 	return nil
 }

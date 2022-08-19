@@ -28,7 +28,7 @@ func (u *UserPray) TransErr(err error) error {
 	return err
 }
 
-func (u *UserPray) CreatePray(ctx context.Context, userId, buddhaId uint64, content string, prayPropIds []uint64) (*models.UserPray, error) {
+func (u *UserPray) CreateUserPray(ctx context.Context, userId, buddhaId uint64, content string, prayPropIds []uint64) (*models.UserPray, error) {
 	userPray := &models.UserPray{
 		UserId: userId,
 		Content: content,

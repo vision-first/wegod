@@ -28,12 +28,12 @@ func NewUserPrayProp(logger *log.Logger) *UserPrayProp {
 func (u *UserPrayProp) TransErr(err error) error {
 	switch err {
 	case gorm.ErrRecordNotFound:
-		return apperrdef.NewErr(errs.ErrCodePrayPropNotFound)
+		return apperrdef.NewErr(errs.ErrCodeUserPrayPropNotFound)
 	}
 	return err
 }
 
-func (u *UserPrayProp) EnsurePropsEnough(ctx context.Context, userId uint64, prayPropIds []uint64) (bool, error) {
+func (u *UserPrayProp) EnsureUserEnoughProps(ctx context.Context, userId uint64, prayPropIds []uint64) (bool, error) {
 	var propNum int64
 	err := facades.MustGormDB(ctx, u.logger).
 		Where(&models.UserPrayProp{UserId: userId}).
@@ -48,7 +48,7 @@ func (u *UserPrayProp) EnsurePropsEnough(ctx context.Context, userId uint64, pra
 	return int(propNum) >= len(prayPropIds), nil
 }
 
-func (u *UserPrayProp) ConsumeProps(ctx context.Context, userId uint64, prayPropIds []uint64) error {
+func (u *UserPrayProp) ConsumeUserProps(ctx context.Context, userId uint64, prayPropIds []uint64) error {
 	err := facades.MustGormDB(ctx, u.logger).
 		Where(&models.UserPrayProp{UserId: userId}).
 		Where(enum.FieldPropId + " IN ? AND " + enum.FieldNum + " > 0", prayPropIds).

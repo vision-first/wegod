@@ -62,14 +62,18 @@ func (w *WorshipProp) IsWorshipPropFree(ctx context.Context, id uint64) (bool, e
 	}).First(&worshipPropDO).Error
 	if err != nil {
 		w.logger.Error(ctx, err)
-		return false, err
+		return false, w.TransErr(err)
 	}
 	return worshipPropDO.Price == 0, nil
 }
 
 func (w *WorshipProp) GetWorshipProp(ctx context.Context, id uint64) (*models.WorshipProp, error)  {
 	var prop models.WorshipProp
-	facades.MustGormDB(ctx, w.logger).Where(map[string]interface{}{enum.FieldId: id}).First(ctx, &prop)
+	err := facades.MustGormDB(ctx, w.logger).Where(map[string]interface{}{enum.FieldId: id}).First(ctx, &prop).Error
+	if err != nil {
+		w.logger.Error(ctx, err)
+		return nil, w.TransErr(err)
+	}
 	return &prop, nil
 }
 

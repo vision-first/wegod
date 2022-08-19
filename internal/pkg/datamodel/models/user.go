@@ -14,5 +14,6 @@ type User struct {
 	Avatar string `json:"avatar" gorm:"type:varchar"`
 	Desc string `json:"desc"`
 	Gender uint8 `json:"gender"`
+	ChannelId uint64 `json:"channel_id"`
 }
 

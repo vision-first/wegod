@@ -59,22 +59,24 @@ func getSrvStructCodeContent(srvName, codeFilePath string) (string, error) {
 		isCodeFilePathEmpty = true
 	}
 
-	apiFp, err := os.OpenFile(codeFilePath, os.O_CREATE|os.O_RDWR|os.O_APPEND, fs.ModePerm)
-	if err != nil {
-		return "", err
-	}
-
-	defer apiFp.Close()
-
 	if !isCodeFilePathEmpty {
-		fileContent, err := ioutil.ReadAll(apiFp)
+		codeFp, err := os.OpenFile(codeFilePath, os.O_CREATE|os.O_RDWR|os.O_APPEND, fs.ModePerm)
 		if err != nil {
 			return "", err
 		}
+
+		defer codeFp.Close()
+
+		fileContent, err := ioutil.ReadAll(codeFp)
+		if err != nil {
+			return "", err
+		}
+
 		file, err := parser.ParseFile(token.NewFileSet(), "", fileContent, 0)
 		if err != nil {
 			return "", err
 		}
+
 		if !file.Package.IsValid() {
 			isCodeFilePathEmpty = true
 		}
@@ -94,7 +96,7 @@ import (
 	}
 
 	tmpl := template.New("srvStruct")
-	tmpl, err = tmpl.Parse(srvTmpl)
+	tmpl, err := tmpl.Parse(srvTmpl)
 	if err != nil {
 		return "", err
 	}
@@ -178,7 +180,7 @@ func checkExistSrvStructAndGetCodeFilePath(srvName, servicesPkgCodePath string) 
 	return
 }
 
-func GenServiceOptionStreamPageQuery(srvName, methodName, dataModelName, dataModelsPkgPath, facadesPkgPath, servicesPkgCodePath string) error {
+func GenServiceOptionStreamPageQuery(srvName, methodName, dataModelName, dataModelsPkgPath, facadesPkgPath, gormImplORMPkgPath, servicesPkgCodePath string) error {
 	alreadyExistSrvStruct, alreadyExistMethod, codeFilePath, err := checkExistSrvStructOrMethodAndGetCodeFilePath(srvName, methodName, servicesPkgCodePath)
 	if err != nil {
 		return err
@@ -188,28 +190,34 @@ func GenServiceOptionStreamPageQuery(srvName, methodName, dataModelName, dataMod
 		return fmt.Errorf("api method: %s.%s already exist", srvName, methodName)
 	}
 
-	codeFp, err := os.OpenFile(codeFilePath, os.O_CREATE|os.O_RDWR|os.O_APPEND, fs.ModePerm)
-	if err != nil {
-		return err
-	}
-
 	var (
 		code string
 		tempNewCodeFilePath string
 		needOverrideCodeFile bool
+		codeFp *os.File
 	)
 	if !alreadyExistSrvStruct {
 		code, err = getSrvStructCodeContent(srvName, codeFilePath)
 		if err != nil {
 			return err
 		}
+
+		codeFp, err = os.OpenFile(codeFilePath, os.O_CREATE|os.O_RDWR|os.O_APPEND, fs.ModePerm)
+		if err != nil {
+			return err
+		}
 	} else {
-		codeBytes, err := ioutil.ReadAll(codeFp)
+		originalCodeFp, err := os.OpenFile(codeFilePath, os.O_CREATE|os.O_RDWR|os.O_APPEND, fs.ModePerm)
 		if err != nil {
 			return err
 		}
 
-		code = string(codeBytes)
+		codeBytes, err := ioutil.ReadAll(originalCodeFp)
+		if err != nil {
+			return err
+		}
+
+		code = string(codeBytes) + "\n"
 
 		tempNewCodeFilePath = codeFilePath + ".new"
 		codeFp, err = os.OpenFile(tempNewCodeFilePath, os.O_CREATE|os.O_RDWR|os.O_APPEND, fs.ModePerm)
@@ -241,6 +249,11 @@ func GenServiceOptionStreamPageQuery(srvName, methodName, dataModelName, dataMod
 		if !strings.Contains(code, facadesPkgPath) {
 			code = strings.Replace(code, "import (", `import (
 	"` + facadesPkgPath + `"`, 1)
+		}
+
+		if !strings.Contains(code, gormImplORMPkgPath) {
+			code = strings.Replace(code, "import (", `import (
+	"` + gormImplORMPkgPath + `"`, 1)
 		}
 
 		if !strings.Contains(code, "context\r\n") {

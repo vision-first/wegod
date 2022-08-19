@@ -6,6 +6,7 @@ import (
 
 type Music struct {
 	BaseModel
+	Name string `json:"name"`
 	AudioUrl string `json:"audio_url" gorm:"type:varchar"`
 	BuddhaIds field.Uint64s `json:"buddha_ids"`
 	ShelfStatus uint32 `json:"shelf_status"`

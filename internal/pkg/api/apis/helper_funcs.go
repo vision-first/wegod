@@ -86,3 +86,26 @@ func transWishPropDOsToDTOs(worshipPropDOs []*models.WorshipProp) []*dtos.Worshi
 	}
 	return worshipPropDTOs
 }
+
+func transShopProductDOToDTO(shopProductDO *models.ShopProduct) *dtos.ShopProduct {
+	return &dtos.ShopProduct{
+		Name: shopProductDO.Name,
+		CategoryId: shopProductDO.CategoryId,
+		MainImages: shopProductDO.MainImages,
+		Desc: shopProductDO.Desc,
+		ProductType: shopProductDO.ProductType,
+		DeliveryType: shopProductDO.DeliveryType,
+		ShelfStatus: shopProductDO.ShelfStatus,
+		InventoryNum: shopProductDO.InventoryNum,
+		SaleNum: shopProductDO.SaleNum,
+		Price: shopProductDO.Price,
+	}
+}
+
+func transShopProductDOsToDTOs(shopProductDOs []*models.ShopProduct) []*dtos.ShopProduct {
+	var shopProductDTOs []*dtos.ShopProduct
+	for _, shopProductDO := range shopProductDOs {
+		shopProductDTOs = append(shopProductDTOs, transShopProductDOToDTO(shopProductDO))
+	}
+	return shopProductDTOs
+}

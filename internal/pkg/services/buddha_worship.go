@@ -9,6 +9,7 @@ import (
 	"github.com/vision-first/wegod/internal/pkg/db/mysql/orms/gormimpl"
 	"github.com/vision-first/wegod/internal/pkg/errs"
 	"github.com/vision-first/wegod/internal/pkg/facades"
+	"github.com/vision-first/wegod/internal/pkg/queryoptions"
 	"gorm.io/gorm"
 	"time"
 )
@@ -35,7 +36,16 @@ func (b *BuddhaWorship) PageBuddhaWorship(ctx context.Context, queryStream *opti
 	db := facades.MustGormDB(ctx, b.logger)
 
 	queryStreamProcessor := optionstream.NewQueryStreamProcessor(queryStream)
-	// TODO. set option handler
+	queryStreamProcessor.
+		OnUint64(queryoptions.EqualUserId, func(val uint64) error {
+			db.Where(&models.BuddhaWorship{UserId: val})
+			return nil
+		}).
+		OnUint64(queryoptions.EqualBuddhaId, func(val uint64) error {
+			db.Where(&models.BuddhaWorship{BuddhaId: val})
+			return nil
+		})
+
 	var buddhaWorshipDOs []*models.BuddhaWorship
 	pagination, err := queryStreamProcessor.PaginateFrom(ctx, gormimpl.NewOptStreamQuery(db), &buddhaWorshipDOs)
 	if err != nil {
@@ -76,7 +86,7 @@ func (b *BuddhaWorship) CreateWorship(ctx context.Context, req *CreateWorshipReq
 
 	if err := db.Create(buddhaWorshipDO).Error; err != nil {
 		b.logger.Error(ctx, err)
-		return err
+		return b.TransErr(err)
 	}
 
 	return nil

@@ -209,7 +209,7 @@ func (b *Buddha) PrayToBuddha(ctx api.Context, req *dtos.PrayToBuddhaReq) (*dtos
 		}
 
 		if len(notFreePrayPropIds) > 0 {
-			ok, err := userPrayPropSrv.EnsurePropsEnough(ctx, authIdent.GetUserId(), notFreePrayPropIds)
+			ok, err := userPrayPropSrv.EnsureUserEnoughProps(ctx, authIdent.GetUserId(), notFreePrayPropIds)
 			if err != nil {
 				b.logger.Error(ctx, err)
 				return nil, err
@@ -222,13 +222,13 @@ func (b *Buddha) PrayToBuddha(ctx api.Context, req *dtos.PrayToBuddhaReq) (*dtos
 		}
 	}
 
-	_, err = services.NewUserPray(b.logger).CreatePray(ctx, authIdent.GetUserId(), req.BuddhaId, req.Content, req.PrayPropIds)
+	_, err = services.NewUserPray(b.logger).CreateUserPray(ctx, authIdent.GetUserId(), req.BuddhaId, req.Content, req.PrayPropIds)
 	if err != nil {
 		b.logger.Error(ctx, err)
 		return nil, err
 	}
 
-	err = userPrayPropSrv.ConsumeProps(ctx, authIdent.GetUserId(), notFreePrayPropIds)
+	err = userPrayPropSrv.ConsumeUserProps(ctx, authIdent.GetUserId(), notFreePrayPropIds)
 	if err != nil {
 		b.logger.Error(ctx, err)
 		return nil, err
@@ -286,7 +286,7 @@ func (b *Buddha) WorshipToBuddha(ctx api.Context, req *dtos.WorshipToBuddhaReq) 
 		return nil, err
 	}
 
-	err = userWorshipSrv.ConsumeWorshipProp(ctx, authIdent.GetUserId(), req.ConsumeUserWorshipPropId)
+	err = userWorshipSrv.ConsumeUserWorshipProp(ctx, authIdent.GetUserId(), req.ConsumeUserWorshipPropId)
 	if err != nil {
 		b.logger.Error(ctx, err)
 		return nil, err
