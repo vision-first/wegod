@@ -146,7 +146,6 @@ func (b *Buddha) CreateBuddhaRentOrder(ctx api.Context, req *dtos.CreateBuddhaRe
     return &resp, nil
 }
 
-
 func (b *Buddha) PageBuddhaRentPackages(ctx api.Context, req *dtos.PageBuddhaRentPackagesReq) (*dtos.PageBuddhaRentPackagesResp, error) {
 	authIdent, err := ctx.GetAuthIdentOrFailed()
 	if err != nil {
