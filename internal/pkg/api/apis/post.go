@@ -25,11 +25,3 @@ func (p *Post) PagePosts(ctx api.Context, req *dtos.PagePostsReq) (*dtos.PagePos
 
     return &resp, nil
 }
-
-func (p *Post) PageRentPackages(ctx api.Context, req *dtos.PageRentPackagesReq) (*dtos.PageRentPackagesResp, error) {
-    var resp dtos.PageRentPackagesResp
-
-    // TODO.Write your logic
-
-    return &resp, nil
-}

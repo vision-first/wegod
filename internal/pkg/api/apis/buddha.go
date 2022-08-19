@@ -30,6 +30,7 @@ func (b *Buddha) PageBuddha(ctx api.Context, req *dtos.PageBuddhaReq) (*dtos.Pag
 		err error
 		buddhaDOs []*models.Buddha
 	)
+
 	buddhaDOs, resp.Pagination, err = services.NewBuddha(b.logger).
 		PageBuddha(ctx, optionstream.NewQueryStream(nil, req.Limit, req.Offset))
 	if err != nil {
@@ -106,12 +107,13 @@ func (b *Buddha) PageUserWatchedBuddhas(ctx api.Context, req *dtos.PageUserWatch
 		return nil, err
 	}
 
+	queryStream := optionstream.NewQueryStream(req.QueryOptions, req.Limit, req.Offset)
+	queryStream.SetOption(queryoptions.EqualUserId, authIdent.GetUserId()).SetOption(queryoptions.IsUnexpired, true)
+
 	var (
 		resp dtos.PageUserWatchedBuddhasResp
 		buddhaDOs []*models.Buddha
 	)
-	queryStream := optionstream.NewQueryStream(req.QueryOptions, req.Limit, req.Offset)
-	queryStream.SetOption(queryoptions.EqualUserId, authIdent.GetUserId()).SetOption(queryoptions.IsUnexpired, true)
 	buddhaDOs, resp.Pagination, err = services.NewBuddha(b.logger).PageUserWatchedBuddhas(ctx, queryStream)
 	if err != nil {
 		b.logger.Error(ctx, err)
@@ -152,10 +154,6 @@ func (b *Buddha) PageBuddhaRentPackages(ctx api.Context, req *dtos.PageBuddhaRen
 		return nil, err
 	}
 
-	var (
-		resp dtos.PageBuddhaRentPackagesResp
-		rentPackageDOs []*models.BuddhaRentPackage
-	)
 	queryStream := optionstream.NewQueryStream(req.QueryOptions, req.Limit, req.Offset)
    	queryStream.SetOption(queryoptions.EqualUserId, authIdent.GetUserId()).
 		SetOption(queryoptions.OnShelfStatus, true).
@@ -168,6 +166,11 @@ func (b *Buddha) PageBuddhaRentPackages(ctx api.Context, req *dtos.PageBuddhaRen
 			enum.FieldDesc,
 			enum.FieldShelfStatus,
 		})
+
+	var (
+		resp dtos.PageBuddhaRentPackagesResp
+		rentPackageDOs []*models.BuddhaRentPackage
+	)
 	rentPackageDOs, resp.Pagination, err = services.NewBuddha(b.logger).PageBuddhaRentPackages(ctx, queryStream)
 	if err != nil {
 		b.logger.Error(ctx, err)

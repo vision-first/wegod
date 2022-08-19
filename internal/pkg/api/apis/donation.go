@@ -52,13 +52,14 @@ func (d *Donation) CreateDonationOrder(ctx api.Context, req *dtos.CreateDonation
 }
 
 func (d *Donation) PageDonationRanks(ctx api.Context, req *dtos.PageDonationRanksReq) (*dtos.PageDonationRanksResp, error) {
-    var (
-    	resp dtos.PageDonationRanksResp
-    	statDOs []*models.UserDonationDailyStat
-		err error
-	)
 	queryStatStream := optionstream.NewQueryStream(req.QueryOptions, req.Limit, req.Offset)
 	queryStatStream.SetOption(queryoptions.OrderByPayedMoneyDesc, nil)
+
+	var (
+		resp dtos.PageDonationRanksResp
+		statDOs []*models.UserDonationDailyStat
+		err error
+	)
 	statDOs, resp.Pagination, err = services.NewUserDonationStat(d.logger).PageUserDonationRanks(ctx, queryStatStream)
 	if err != nil {
 		d.logger.Error(ctx, err)

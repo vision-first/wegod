@@ -24,11 +24,13 @@ func (m *Music) PageMusics(ctx api.Context, req *dtos.PageMusicsReq) (*dtos.Page
 		m.logger.Error(ctx, err)
 		return nil, err
 	}
+
 	for _, musicDO := range musicDOs {
 		resp.List = append(resp.List, &dtos.Music{
 			AudioUrl: musicDO.AudioUrl,
 			Name: musicDO.Name,
 		})
 	}
+
     return &resp, nil
 }
