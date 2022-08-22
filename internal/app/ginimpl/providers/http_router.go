@@ -41,6 +41,10 @@ func (p *HttpRouterProvider) Boot() error {
 	authApi := apis.NewAuth(logger)
 	userApi := apis.NewUser(logger)
 	shopApi := apis.NewShop(logger)
+	prayPropApi := apis.NewPrayProp(logger)
+	wishPropApi := apis.NewWorshipProp(logger)
+	musicApi := apis.NewMusic(logger)
+	donationApi := apis.NewDonation(logger)
 
 	apiDispatcher := ginimpl.NewApiDispatcher()
 
@@ -53,11 +57,31 @@ func (p *HttpRouterProvider) Boot() error {
 	publicGroup.GET("/post/post", apiDispatcher.MakeDispatchFunc(postApi.GetPost))
 	publicGroup.POST("/register", apiDispatcher.MakeDispatchFunc(authApi.Register))
 	publicGroup.POST("/login", apiDispatcher.MakeDispatchFunc(authApi.Login))
+	publicGroup.POST("/register/verify_code", apiDispatcher.MakeDispatchFunc(authApi.SendVerifyCodeForRegister))
+	publicGroup.POST("/login/verify_code", apiDispatcher.MakeDispatchFunc(authApi.SendVerifyCodeForLogin))
 	publicGroup.GET("/shop/products", apiDispatcher.MakeDispatchFunc(shopApi.PageProducts))
 	publicGroup.GET("/shop/product", apiDispatcher.MakeDispatchFunc(shopApi.GetProduct))
-
+	publicGroup.GET("/buddha/rent/packages", apiDispatcher.MakeDispatchFunc(buddhaApi.PageBuddhaRentPackages))
+	publicGroup.GET("/buddha/pray/props", apiDispatcher.MakeDispatchFunc(prayPropApi.PagePrayProps))
+	publicGroup.GET("/buddha/worship/props", apiDispatcher.MakeDispatchFunc(wishPropApi.PageWorshipProps))
+	publicGroup.GET("/musics", apiDispatcher.MakeDispatchFunc(musicApi.PageMusics))
+	publicGroup.GET("/shop/product/categories", apiDispatcher.MakeDispatchFunc(shopApi.PageProductCategories))
 
 	privateGroup.POST("/user", apiDispatcher.MakeDispatchFunc(userApi.SetUserInfo))
+	privateGroup.GET("/", apiDispatcher.MakeDispatchFunc(userApi.GetUserInfo))
+	privateGroup.POST("/buddha/watch", apiDispatcher.MakeDispatchFunc(buddhaApi.WatchBuddha))
+	privateGroup.POST("/buddha/unwatch", apiDispatcher.MakeDispatchFunc(buddhaApi.UnwatchBuddha))
+	privateGroup.GET("/user/buddha", apiDispatcher.MakeDispatchFunc(buddhaApi.PageUserWatchedBuddhas))
+	privateGroup.POST("/buddha/rent/order", apiDispatcher.MakeDispatchFunc(buddhaApi.CreateBuddhaRentOrder))
+	privateGroup.POST("/buddha/worship", apiDispatcher.MakeDispatchFunc(buddhaApi.WorshipToBuddha))
+	privateGroup.POST("/buddha/pray", apiDispatcher.MakeDispatchFunc(buddhaApi.PrayToBuddha))
+	privateGroup.POST("buddha/pray/prop/order", apiDispatcher.MakeDispatchFunc(prayPropApi.CreatePrayPropOrder))
+	privateGroup.POST("buddha/worship/prop/order", apiDispatcher.MakeDispatchFunc(wishPropApi.CreateWorshipPropOrder))
+	privateGroup.GET("shop/order", apiDispatcher.MakeDispatchFunc(shopApi.GetProduct))
+	privateGroup.GET("/shop/orders", apiDispatcher.MakeDispatchFunc(shopApi.PageOrders))
+	privateGroup.POST("shop/order", apiDispatcher.MakeDispatchFunc(shopApi.CreateOrder))
+	privateGroup.POST("/donation", apiDispatcher.MakeDispatchFunc(donationApi.CreateDonationOrder))
+	privateGroup.POST("/donation/ranks", apiDispatcher.MakeDispatchFunc(donationApi.PageDonationRanks))
 
 	return nil
 }
