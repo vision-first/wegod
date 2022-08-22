@@ -8,7 +8,7 @@ import (
 	"github.com/vision-first/wegod/internal/pkg/api"
 	"github.com/vision-first/wegod/internal/pkg/api/dtos"
 	"github.com/vision-first/wegod/internal/pkg/auth"
-	"github.com/vision-first/wegod/internal/pkg/enums"
+	"github.com/vision-first/wegod/internal/pkg/enum"
 	"github.com/vision-first/wegod/internal/pkg/errs"
 	"github.com/vision-first/wegod/internal/pkg/services"
 )
@@ -138,7 +138,7 @@ func (a *Auth) SendVerifyCodeForRegister(ctx api.Context, req *dtos.SendVerifyCo
 	}
 
     code := stringhelper.GenRandomStr(stringhelper.RandomStringModNumber, 6)
-	err = services.NewSMS(a.logger).SendMsg(req.Phone, enums.MakeVerifyCodeMsgForRegister(code))
+	err = services.NewSMS(a.logger).SendMsg(req.Phone, enum.MakeVerifyCodeMsgForRegister(code))
 	if err != nil {
 		a.logger.Error(ctx, err)
 		return nil, a.TransErr(err)
@@ -157,7 +157,7 @@ func (a *Auth) SendVerifyCodeForLogin(ctx api.Context, req *dtos.SendVerifyCodeF
     var resp dtos.SendVerifyCodeForLoginResp
 
 	code := stringhelper.GenRandomStr(stringhelper.RandomStringModNumber, 6)
-	err := services.NewSMS(a.logger).SendMsg(req.Phone, enums.MakeVerifyCodeMsgForRegister(code))
+	err := services.NewSMS(a.logger).SendMsg(req.Phone, enum.MakeVerifyCodeMsgForLogin(code))
 	if err != nil {
 		a.logger.Error(ctx, err)
 		return nil, a.TransErr(err)

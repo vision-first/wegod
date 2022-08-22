@@ -6,7 +6,7 @@ import (
 	"github.com/go-redis/redis/v8"
 	"github.com/vision-first/wegod/internal/pkg/config"
 	"github.com/vision-first/wegod/internal/pkg/encrypt"
-	"github.com/vision-first/wegod/internal/pkg/enums"
+	"github.com/vision-first/wegod/internal/pkg/enum"
 	"github.com/vision-first/wegod/internal/pkg/facades"
 	"time"
 )
@@ -22,7 +22,7 @@ func NewAuth(logger *log.Logger) *Auth {
 }
 
 func (a *Auth) RememberPhoneVerifyCodeForAuth(ctx context.Context, phone, code string) error {
-	err := facades.RedisGroup(a.logger).Set(ctx, enums.MakeRedisKeyPhoneVerifyCode(phone), []byte(code), time.Minute * 20)
+	err := facades.RedisGroup(a.logger).Set(ctx, enum.MakeRedisKeyPhoneVerifyCode(phone), []byte(code), time.Minute * 20)
 	if err != nil {
 		a.logger.Error(ctx, err)
 		return a.TransErr(err)
@@ -31,7 +31,7 @@ func (a *Auth) RememberPhoneVerifyCodeForAuth(ctx context.Context, phone, code s
 }
 
 func (a *Auth) AuthPhoneVerifyCode(ctx context.Context, phone, code string) (bool, error) {
-	codeBytes, err := facades.RedisGroup(a.logger).Get(ctx, enums.MakeVerifyCodeMsgForRegister(phone))
+	codeBytes, err := facades.RedisGroup(a.logger).Get(ctx, enum.MakeVerifyCodeMsgForRegister(phone))
 	if err != nil {
 		if err == redis.Nil {
 			return false, nil
