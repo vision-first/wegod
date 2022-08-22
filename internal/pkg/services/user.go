@@ -57,7 +57,7 @@ func (u *User) CreateUser(ctx context.Context, req *CreateUserReq) (*models.User
 		return nil, u.TransErr(err)
 	}
 
-	if err = facades.MustGormDB(ctx, u.logger).Create(userDO).Error; err != nil {
+	if err = facades.MustGORMDB(ctx, u.logger).Create(userDO).Error; err != nil {
 		u.logger.Error(ctx, err)
 		return nil, u.TransErr(err)
 	}
@@ -67,7 +67,7 @@ func (u *User) CreateUser(ctx context.Context, req *CreateUserReq) (*models.User
 
 func (u *User) GetUserById(ctx context.Context, id uint64) (*models.User, error) {
 	var userDO models.User
-	if err := facades.MustGormDB(ctx, u.logger).First(&userDO, id).Error; err != nil {
+	if err := facades.MustGORMDB(ctx, u.logger).First(&userDO, id).Error; err != nil {
 		u.logger.Error(ctx, err)
 		return nil, u.TransErr(err)
 	}
@@ -76,7 +76,7 @@ func (u *User) GetUserById(ctx context.Context, id uint64) (*models.User, error)
 
 func (u *User) EnsureNotUsePhoneUser(ctx context.Context, phone string) (bool, error) {
 	var userNumForBoundReqPhone int64
-	err := facades.MustGormDB(ctx, u.logger).Where(&models.User{Phone: phone}).Count(&userNumForBoundReqPhone).Error
+	err := facades.MustGORMDB(ctx, u.logger).Where(&models.User{Phone: phone}).Count(&userNumForBoundReqPhone).Error
 	if err != nil {
 		u.logger.Error(ctx, err)
 		return false, u.TransErr(err)
@@ -86,7 +86,7 @@ func (u *User) EnsureNotUsePhoneUser(ctx context.Context, phone string) (bool, e
 
 func (u *User) GetUserByPhone(ctx context.Context, phone string) (*models.User, error) {
 	var userDO models.User
-	err := facades.MustGormDB(ctx, u.logger).Where(&models.User{Phone: phone}).First(ctx, &userDO).Error
+	err := facades.MustGORMDB(ctx, u.logger).Where(&models.User{Phone: phone}).First(ctx, &userDO).Error
 	if err != nil {
 		u.logger.Error(ctx, err)
 		return nil, u.TransErr(err)
@@ -95,7 +95,7 @@ func (u *User) GetUserByPhone(ctx context.Context, phone string) (*models.User, 
 }
 
 func (u *User) PageUsers(ctx context.Context, queryStream *optionstream.QueryStream) ([]*models.User, *optionstream.Pagination, error) {
-	db := facades.MustGormDB(ctx, u.logger)
+	db := facades.MustGORMDB(ctx, u.logger)
 
 	queryStreamProcessor := optionstream.NewQueryStreamProcessor(queryStream)
 	queryStreamProcessor.

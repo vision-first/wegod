@@ -25,7 +25,7 @@ func (m *Music) TransErr(err error) error {
 	return err
 }
 func (m *Music) PageMusics(ctx context.Context, queryStream *optionstream.QueryStream) ([]*models.Music, *optionstream.Pagination, error) {
-	db := facades.MustGormDB(ctx, m.logger)
+	db := facades.MustGORMDB(ctx, m.logger)
 
 	queryStreamProcessor := optionstream.NewQueryStreamProcessor(queryStream)
 	queryStreamProcessor.

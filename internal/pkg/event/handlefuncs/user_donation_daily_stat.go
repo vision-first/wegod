@@ -23,7 +23,7 @@ func MakeUserDonationDailyStatHandleFunc(logger *log.Logger) eventobserver.Handl
 			return nil
 		}
 
-		db := facades.MustGormDB(ctx, logger)
+		db := facades.MustGORMDB(ctx, logger)
 
 		updateStatRes := db.Where(&models.UserDonationDailyStat{UserId: payload.UserId, DateYmd: int(dateYmd)}).
 		Updates(map[string]interface{}{

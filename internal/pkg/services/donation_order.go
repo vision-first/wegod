@@ -32,7 +32,7 @@ func (d *DonationOrder) TransErr(err error) error {
 }
 
 func (d *DonationOrder) PageOrders(ctx context.Context, queryStream *optionstream.QueryStream) ([]*models.DonationOrder, *optionstream.Pagination, error) {
-	db := facades.MustGormDB(ctx, d.logger).Order(clause.OrderByColumn{Column: clause.Column{Name: enum.FieldId}, Desc: true})
+	db := facades.MustGORMDB(ctx, d.logger).Order(clause.OrderByColumn{Column: clause.Column{Name: enum.FieldId}, Desc: true})
 
 	queryStreamProcessor := optionstream.NewQueryStreamProcessor(queryStream)
 	queryStreamProcessor.OnUint64(queryoptions.EqualUserId, func(val uint64) error {
@@ -52,7 +52,7 @@ func (d *DonationOrder) PageOrders(ctx context.Context, queryStream *optionstrea
 
 func (d *DonationOrder) GetOrderBySn(ctx context.Context, sn string) (*models.DonationOrder, error) {
 	var order models.DonationOrder
-	err := facades.MustGormDB(ctx, d.logger).Where(map[string]interface{}{enum.FieldSn: sn}).First(&order).Error
+	err := facades.GORMDB(ctx, d.logger).Where(map[string]interface{}{enum.FieldSn: sn}).First(&order).Error
 	if err != nil {
 		d.logger.Error(ctx, err)
 		return nil, d.TransErr(err)
@@ -75,7 +75,7 @@ func (d *DonationOrder) CreateOrder(ctx context.Context, req *CreateOrderReq) (*
 		DonationScene: uint32(req.Scene),
 		Status: models.OrderStatusNotPay,
 	}
-	if err := facades.MustGormDB(ctx, d.logger).Create(order).Error; err != nil {
+	if err := facades.MustGORMDB(ctx, d.logger).Create(order).Error; err != nil {
 		d.logger.Error(ctx, err)
 		return nil, d.TransErr(err)
 	}

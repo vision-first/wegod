@@ -33,7 +33,7 @@ func (b *BuddhaWorship) TransErr(err error) error {
 
 
 func (b *BuddhaWorship) PageBuddhaWorship(ctx context.Context, queryStream *optionstream.QueryStream) ([]*models.BuddhaWorship, *optionstream.Pagination, error) {
-	db := facades.MustGormDB(ctx, b.logger)
+	db := facades.MustGORMDB(ctx, b.logger)
 
 	queryStreamProcessor := optionstream.NewQueryStreamProcessor(queryStream)
 	queryStreamProcessor.
@@ -64,7 +64,7 @@ type CreateWorshipReq struct {
 }
 
 func (b *BuddhaWorship) CreateWorship(ctx context.Context, req *CreateWorshipReq) error {
-	db := facades.MustGormDB(ctx, b.logger)
+	db := facades.MustGORMDB(ctx, b.logger)
 
 
 	if req.NeedConsumeUserProp && req.ConsumeUserWorshipPropDO == nil {

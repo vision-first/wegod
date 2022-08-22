@@ -35,7 +35,7 @@ func (p *PrayProp) TransErr(err error) error {
 }
 
 func (p *PrayProp) PagePrayProps(ctx context.Context, queryStream *optionstream.QueryStream) ([]*models.PrayProp, *optionstream.Pagination, error) {
-	db := facades.MustGormDB(ctx, p.logger).Order(clause.OrderByColumn{Column: clause.Column{Name: enum.FieldSort}, Desc: true})
+	db := facades.MustGORMDB(ctx, p.logger).Order(clause.OrderByColumn{Column: clause.Column{Name: enum.FieldSort}, Desc: true})
 
 	queryStreamProcessor := optionstream.NewQueryStreamProcessor(queryStream)
 	queryStreamProcessor.
@@ -61,7 +61,7 @@ func (p *PrayProp) PagePrayProps(ctx context.Context, queryStream *optionstream.
 
 func (p *PrayProp) IsPrayPropFree(ctx context.Context, id uint64) (bool, error) {
 	var prayPropDO models.PrayProp
-	err := facades.MustGormDB(ctx, p.logger).
+	err := facades.MustGORMDB(ctx, p.logger).
 		Select(enum.FieldPrice).
 		Where(map[string]interface{}{enum.FieldId: id}).
 		First(&prayPropDO).

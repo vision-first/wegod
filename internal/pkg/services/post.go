@@ -11,8 +11,8 @@ import (
 	"github.com/vision-first/wegod/internal/pkg/errs"
 	"github.com/vision-first/wegod/internal/pkg/facades"
 	"github.com/vision-first/wegod/internal/pkg/queryoptions"
-	"gorm.io/gorm/clause"
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type Post struct {
@@ -34,7 +34,7 @@ func (p *Post) TransErr(err error) error {
 }
 
 func (p *Post) PagePosts(ctx context.Context, queryStream *optionstream.QueryStream) ([]*models.Post, *optionstream.Pagination, error) {
-	db := facades.MustGormDB(ctx, p.logger).Order(clause.OrderByColumn{
+	db := facades.MustGORMDB(ctx, p.logger).Order(clause.OrderByColumn{
 		Column: clause.Column{Name: enum.FieldSort},
 		Desc: true,
 	})
@@ -57,7 +57,7 @@ func (p *Post) PagePosts(ctx context.Context, queryStream *optionstream.QueryStr
 
 func (p *Post) GetPostById(ctx context.Context, id uint64) (*models.Post, error) {
 	var post models.Post
-	if err := facades.MustGormDB(ctx, p.logger).First(&post, id).Error; err != nil {
+	if err := facades.MustGORMDB(ctx, p.logger).First(&post, id).Error; err != nil {
 		p.logger.Error(ctx, err)
 		return nil, p.TransErr(err)
 	}

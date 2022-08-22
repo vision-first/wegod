@@ -34,7 +34,7 @@ func (u *UserDonationStat) TransErr(err error) error {
 
 
 func (u *UserDonationStat) PageUserDonationRanks(ctx context.Context, queryStream *optionstream.QueryStream) ([]*models.UserDonationDailyStat, *optionstream.Pagination, error) {
-	db := facades.MustGormDB(ctx, u.logger)
+	db := facades.MustGORMDB(ctx, u.logger)
 
 	queryStreamProcessor := optionstream.NewQueryStreamProcessor(queryStream)
 

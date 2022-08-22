@@ -32,7 +32,7 @@ func (p *PrayPropOrder) TransErr(err error) error {
 
 func (p *PrayPropOrder) CreateOrder(ctx context.Context, userId, prayPropId uint64, num uint32) (*models.PrayPropOrder, error) {
 	var prayPropDO models.PrayProp
-	db := facades.MustGormDB(ctx, p.logger)
+	db := facades.MustGORMDB(ctx, p.logger)
 	if err := db.First(&prayPropDO, prayPropId).Error; err != nil {
 		p.logger.Error(ctx, err)
 		return nil, p.TransErr(err)
@@ -56,7 +56,7 @@ func (p *PrayPropOrder) CreateOrder(ctx context.Context, userId, prayPropId uint
 
 func (p *PrayPropOrder) GetOrderBySn(ctx context.Context, userId uint64, sn string) (*models.PrayPropOrder, error) {
 	var orderDO models.PrayPropOrder
-	err := facades.MustGormDB(ctx, p.logger).
+	err := facades.MustGORMDB(ctx, p.logger).
 		Where(&models.PrayPropOrder{UserId: userId, Sn: sn}).
 		First(ctx, &orderDO).
 		Error

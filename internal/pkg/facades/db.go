@@ -3,8 +3,8 @@ package facades
 import (
 	"context"
 	"github.com/995933447/log-go"
-	"github.com/vision-first/wegod/internal/pkg/db/mysql/orms/gormimpl"
 	"github.com/vision-first/wegod/internal/pkg/config"
+	"github.com/vision-first/wegod/internal/pkg/db/mysql/orms/gormimpl"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"sync"
@@ -12,14 +12,14 @@ import (
 )
 
 var (
-	newGormDBMu sync.Mutex
+	newGORMDBMu sync.Mutex
 	gormDB *gorm.DB
 )
 
-func MustGormDB(ctx context.Context, baseLogger *log.Logger) *gorm.DB {
+func MustGORMDB(ctx context.Context, baseLogger *log.Logger) *gorm.DB {
 	if gormDB == nil {
-		newGormDBMu.Lock()
-		defer newGormDBMu.Unlock()
+		newGORMDBMu.Lock()
+		defer newGORMDBMu.Unlock()
 		if gormDB == nil {
 			var err error
 			gormDB, err = gormimpl.InitDB(&gormimpl.InitDBConfig{
@@ -32,7 +32,7 @@ func MustGormDB(ctx context.Context, baseLogger *log.Logger) *gorm.DB {
 				MaxIdleConns: config.Conf.Mysql.MaxIdleConns,
 				MaxConns: config.Conf.Mysql.MaxConns,
 				LoggerConfig: &gormimpl.DBLoggerConfig{
-					LogLevel: transConfLogLevelToGorm(config.Conf.DB.Mysql.Log.Level),
+					LogLevel: transConfLogLevelToGORM(config.Conf.DB.Mysql.Log.Level),
 					SlowThreshold: time.Second * time.Duration(config.Conf.Mysql.Log.SlowThreshold),
 					BaseLogger: baseLogger,
 				},
@@ -50,7 +50,7 @@ func MustGormDB(ctx context.Context, baseLogger *log.Logger) *gorm.DB {
 	return gormDB
 }
 
-func transConfLogLevelToGorm(confLogLevel string) logger.LogLevel {
+func transConfLogLevelToGORM(confLogLevel string) logger.LogLevel {
 	switch confLogLevel {
 	case "error":
 		return logger.Error

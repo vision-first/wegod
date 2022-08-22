@@ -33,7 +33,7 @@ func (u *UserWorshipProp) TransErr(err error) error {
 }
 
 func (u *UserWorshipProp) PageUserWorshipProps(ctx context.Context, queryStream *optionstream.QueryStream) ([]*models.UserWorshipProp, *optionstream.Pagination, error) {
-	db := facades.MustGormDB(ctx, u.logger)
+	db := facades.MustGORMDB(ctx, u.logger)
 
 	queryStreamProcessor := optionstream.NewQueryStreamProcessor(queryStream)
 	queryStreamProcessor.OnUint64(queryoptions.EqualUserId, func(val uint64) error {
@@ -52,7 +52,7 @@ func (u *UserWorshipProp) PageUserWorshipProps(ctx context.Context, queryStream 
 }
 
 func (u *UserWorshipProp) GetUserWorshipProp(ctx context.Context, optionStream *optionstream.Stream) (*models.UserWorshipProp, error) {
-	db := facades.MustGormDB(ctx, u.logger)
+	db := facades.MustGORMDB(ctx, u.logger)
 
 	err := optionstream.NewStreamProcessor(optionStream).
 		OnUint64(queryoptions.EqualUserId, func(val uint64) error {
@@ -81,7 +81,7 @@ func (u *UserWorshipProp) GetUserWorshipProp(ctx context.Context, optionStream *
 
 func (u *UserWorshipProp) ExistUserWorshipProp(ctx context.Context, userId, worshipPropId, id uint64) (bool, error) {
 	var userWorshipNum int64
-	err := facades.MustGormDB(ctx, u.logger).
+	err := facades.MustGORMDB(ctx, u.logger).
 		Where(map[string]interface{}{enum.FieldId: id, enum.FieldUserId: userId, enum.FieldWorshipPropId: worshipPropId}).
 		Count(&userWorshipNum).
 		Error
@@ -92,7 +92,7 @@ func (u *UserWorshipProp) ExistUserWorshipProp(ctx context.Context, userId, wors
 }
 
 func (u *UserWorshipProp) ConsumeUserWorshipProp(ctx context.Context, userId, id uint64) error {
-	err := facades.MustGormDB(ctx, u.logger).
+	err := facades.MustGORMDB(ctx, u.logger).
 		Where(map[string]interface{}{enum.FieldId: id, enum.FieldUserId: userId}).
 		Delete(ctx).
 		Error

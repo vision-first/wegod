@@ -31,7 +31,7 @@ func (*WorshipProp) TransErr(err error) error {
 }
 
 func (w *WorshipProp) PageWorshipProps(ctx context.Context, queryStream *optionstream.QueryStream) ([]*models.WorshipProp, *optionstream.Pagination, error) {
-	db := facades.MustGormDB(ctx, w.logger).Order(clause.OrderByColumn{Column: clause.Column{Name: enum.FieldSort}, Desc: true})
+	db := facades.MustGORMDB(ctx, w.logger).Order(clause.OrderByColumn{Column: clause.Column{Name: enum.FieldSort}, Desc: true})
 
 	queryStreamProcessor := optionstream.NewQueryStreamProcessor(queryStream)
 	queryStreamProcessor.
@@ -57,7 +57,7 @@ func (w *WorshipProp) PageWorshipProps(ctx context.Context, queryStream *options
 
 func (w *WorshipProp) IsWorshipPropFree(ctx context.Context, id uint64) (bool, error) {
 	var worshipPropDO models.WorshipProp
-	err := facades.MustGormDB(ctx, w.logger).Where(map[string]interface{}{
+	err := facades.MustGORMDB(ctx, w.logger).Where(map[string]interface{}{
 		enum.FieldId: id,
 	}).First(&worshipPropDO).Error
 	if err != nil {
@@ -69,7 +69,7 @@ func (w *WorshipProp) IsWorshipPropFree(ctx context.Context, id uint64) (bool, e
 
 func (w *WorshipProp) GetWorshipPropById(ctx context.Context, id uint64) (*models.WorshipProp, error)  {
 	var prop models.WorshipProp
-	err := facades.MustGormDB(ctx, w.logger).Where(map[string]interface{}{enum.FieldId: id}).First(ctx, &prop).Error
+	err := facades.MustGORMDB(ctx, w.logger).Where(map[string]interface{}{enum.FieldId: id}).First(ctx, &prop).Error
 	if err != nil {
 		w.logger.Error(ctx, err)
 		return nil, w.TransErr(err)

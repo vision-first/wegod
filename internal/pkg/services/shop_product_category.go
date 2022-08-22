@@ -28,7 +28,7 @@ func (s *ShopProductCategory) TransErr(err error) error {
 }
 
 func (s *ShopProductCategory) PageProductCategories(ctx context.Context, queryStream *optionstream.QueryStream) ([]*models.ShopProductCategory, *optionstream.Pagination, error) {
-	db := facades.MustGormDB(ctx, s.logger)
+	db := facades.MustGORMDB(ctx, s.logger)
 
 	queryStreamProcessor := optionstream.NewQueryStreamProcessor(queryStream)
 	// TODO. set option handler

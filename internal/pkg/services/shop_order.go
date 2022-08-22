@@ -36,7 +36,7 @@ func (s *ShopOrder) TransErr(err error) error {
 
 func (s *ShopOrder) GetOrderById(ctx context.Context, id uint64) (*models.ShopOrder, error) {
 	var orderDO models.ShopOrder
-	if err := facades.MustGormDB(ctx, s.logger).First(&orderDO, id).Error; err != nil {
+	if err := facades.MustGORMDB(ctx, s.logger).First(&orderDO, id).Error; err != nil {
 		s.logger.Error(ctx, err)
 		return nil, s.TransErr(err)
 	}
@@ -44,7 +44,7 @@ func (s *ShopOrder) GetOrderById(ctx context.Context, id uint64) (*models.ShopOr
 }
 
 func (s *ShopOrder) GetOrder(ctx context.Context, optionStream *optionstream.Stream) (*models.ShopOrder, error) {
-	db := facades.MustGormDB(ctx, s.logger)
+	db := facades.MustGORMDB(ctx, s.logger)
 
 	err := optionstream.NewStreamProcessor(optionStream).
 		OnUint64(queryoptions.EqualUserId, func(val uint64) error {
@@ -71,7 +71,7 @@ func (s *ShopOrder) GetOrder(ctx context.Context, optionStream *optionstream.Str
 }
 
 func (s *ShopOrder) PageOrders(ctx context.Context, queryStream *optionstream.QueryStream) ([]*models.ShopOrder, *optionstream.Pagination, error) {
-	db := facades.MustGormDB(ctx, s.logger).Order(clause.OrderByColumn{Column: clause.Column{Name: enum.FieldCreatedAt}, Desc: true})
+	db := facades.MustGORMDB(ctx, s.logger).Order(clause.OrderByColumn{Column: clause.Column{Name: enum.FieldCreatedAt}, Desc: true})
 
 	queryStreamProcessor := optionstream.NewQueryStreamProcessor(queryStream)
 	queryStreamProcessor.
@@ -123,7 +123,7 @@ type Consignee struct {
 
 func (s *ShopOrder) CreateOrder(ctx context.Context, userId, productId uint64, boughtNum uint32, remark string, consignee Consignee) (*models.ShopOrder, error) {
 	var productDO models.ShopProduct
-	db := facades.MustGormDB(ctx, s.logger)
+	db := facades.MustGORMDB(ctx, s.logger)
 	if err := db.First(&productDO, productId).Error; err != nil {
 		s.logger.Error(ctx, err)
 		return nil, s.TransErr(err)

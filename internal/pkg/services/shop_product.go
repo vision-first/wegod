@@ -27,7 +27,7 @@ func (s *ShopProduct) TransErr(err error) error {
 }
 
 func (s *ShopProduct) PageProducts(ctx context.Context, queryStream *optionstream.QueryStream) ([]*models.ShopProduct, *optionstream.Pagination, error) {
-	db := facades.MustGormDB(ctx, s.logger)
+	db := facades.MustGORMDB(ctx, s.logger)
 
 	queryStreamProcessor := optionstream.NewQueryStreamProcessor(queryStream)
 	queryStreamProcessor.

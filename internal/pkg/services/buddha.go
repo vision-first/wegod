@@ -37,7 +37,7 @@ func (b *Buddha) TransErr(err error) error {
 func (b *Buddha) PageBuddha(ctx context.Context, queryStream *optionstream.QueryStream) ([]*models.Buddha, *optionstream.Pagination, error) {
 	var BuddhaDOs []*models.Buddha
 
-	db := facades.MustGormDB(ctx, b.logger).Order(clause.OrderByColumn{Column: clause.Column{Name: enum.FieldId}, Desc: true})
+	db := facades.MustGORMDB(ctx, b.logger).Order(clause.OrderByColumn{Column: clause.Column{Name: enum.FieldId}, Desc: true})
 
 	optProcessor := optionstream.NewQueryStreamProcessor(queryStream)
 	optProcessor.OnStringList(queryoptions.SelectColumns, gormimpl.MakeOnSelectColumnsOptHandler(db))
@@ -52,7 +52,7 @@ func (b *Buddha) PageBuddha(ctx context.Context, queryStream *optionstream.Query
 
 func (b *Buddha) IsBuddhaFreeRent(ctx context.Context, id uint64) (bool, error) {
 	isFreeRentRes := &struct {IsFreeRent bool `json:"is_free_rent"`}{}
-	err := facades.MustGormDB(ctx, b.logger).
+	err := facades.MustGORMDB(ctx, b.logger).
 		Where(map[string]interface{}{enum.FieldId: id}).Select(enum.FieldIsFreeRent).
 		First(isFreeRentRes).
 		Error
@@ -69,7 +69,7 @@ func (b *Buddha) IsBuddhaFreeRent(ctx context.Context, id uint64) (bool, error) 
 }
 
 func (b *Buddha) WatchBuddha(ctx context.Context, userId, buddhaId uint64, expireAt int64) error {
-	db := facades.MustGormDB(ctx, b.logger)
+	db := facades.MustGORMDB(ctx, b.logger)
 
 	buddhaFollowDO := models.BuddhaFollow {
 		UserId: userId,
@@ -103,7 +103,7 @@ func (b *Buddha) WatchBuddha(ctx context.Context, userId, buddhaId uint64, expir
 }
 
 func (b *Buddha) UnwatchBuddha(ctx context.Context, userId, buddhaId uint64) error {
-	err := facades.MustGormDB(ctx, b.logger).
+	err := facades.MustGORMDB(ctx, b.logger).
 		Where(&models.BuddhaFollow{UserId: userId, BuddhaId: buddhaId}).
 		Delete(&models.BuddhaFollow{}).
 		Error
@@ -117,7 +117,7 @@ func (b *Buddha) UnwatchBuddha(ctx context.Context, userId, buddhaId uint64) err
 func (b *Buddha) PageUserWatchedBuddhas(ctx context.Context, queryStream *optionstream.QueryStream) ([]*models.Buddha, *optionstream.Pagination, error) {
 	followTableName := (&models.BuddhaFollow{}).TableName()
 	buddhaTableName := (&models.Buddha{}).TableName()
-	db := facades.MustGormDB(ctx, b.logger).
+	db := facades.MustGORMDB(ctx, b.logger).
 		Model(&models.BuddhaFollow{}).
 		Select(buddhaTableName + ".*").
 		Joins("RIGHT JOIN " + buddhaTableName +
@@ -147,7 +147,7 @@ func (b *Buddha) PageUserWatchedBuddhas(ctx context.Context, queryStream *option
 }
 
 func (b *Buddha) PageBuddhaRentPackages(ctx context.Context, queryStream *optionstream.QueryStream) ([]*models.BuddhaRentPackage, *optionstream.Pagination, error) {
-	db := facades.MustGormDB(ctx, b.logger).Order(clause.OrderByColumn{Column: clause.Column{Name: enum.FieldSort}, Desc: true})
+	db := facades.MustGORMDB(ctx, b.logger).Order(clause.OrderByColumn{Column: clause.Column{Name: enum.FieldSort}, Desc: true})
 	queryStreamProcessor := optionstream.NewQueryStreamProcessor(queryStream)
 	queryStreamProcessor.
 		OnUint64(queryoptions.EqualBuddhaId, func(val uint64) error {
@@ -170,7 +170,7 @@ func (b *Buddha) PageBuddhaRentPackages(ctx context.Context, queryStream *option
 }
 
 func (b *Buddha) PrayToBuddha(ctx context.Context, userId, buddhaId uint64, prayPropIds []uint64, content string) error {
-	err := facades.MustGormDB(ctx, b.logger).Create(&models.UserPray{
+	err := facades.MustGORMDB(ctx, b.logger).Create(&models.UserPray{
 		UserId: userId,
 		BuddhaId: buddhaId,
 		Content: content,

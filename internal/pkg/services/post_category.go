@@ -34,7 +34,7 @@ func (p *PostCategory) TransErr(err error) error {
 
 
 func (p *PostCategory) PostCategories(ctx context.Context, queryStream *optionstream.QueryStream) ([]*models.PostCategory, *optionstream.Pagination, error) {
-	db := facades.MustGormDB(ctx, p.logger).Order(clause.OrderByColumn{
+	db := facades.MustGORMDB(ctx, p.logger).Order(clause.OrderByColumn{
 		Column: clause.Column{
 			Name: enum.FieldSort,
 		},

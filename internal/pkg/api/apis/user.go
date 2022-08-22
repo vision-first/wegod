@@ -64,7 +64,7 @@ func (u *User) SetUserInfo(ctx api.Context, req *dtos.SetUserInfoReq) (*dtos.Set
 		return nil, err
 	}
 
-	err = facades.MustGormDB(ctx, u.logger).Save(userDO).Error
+	err = facades.MustGORMDB(ctx, u.logger).Save(userDO).Error
 	if err != nil {
 		u.logger.Error(ctx, err)
 		return nil, err

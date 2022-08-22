@@ -23,7 +23,7 @@ func NewMigrateDataModelProvider(dataModels []interface{}, logger *log.Logger) *
 }
 
 func (p *MigrateDataModelProvider) Boot() error {
-	if err := facades.MustGormDB(nil, p.logger).AutoMigrate(p.dataModels...); err != nil {
+	if err := facades.MustGORMDB(nil, p.logger).AutoMigrate(p.dataModels...); err != nil {
 		return err
 	}
 	return nil

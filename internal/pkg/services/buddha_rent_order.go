@@ -37,7 +37,7 @@ func (*BuddhaRentOrder) GenOrderSn() string {
 }
 
 func (b *BuddhaRentOrder) CreateOrder(ctx context.Context, userId, rentPackageId uint64, remark string) (*models.BuddhaRentOrder, error) {
-	db := facades.MustGormDB(ctx, b.logger)
+	db := facades.MustGORMDB(ctx, b.logger)
 
 	var rentPackageDO models.BuddhaRentPackage
 	if err := db.First(&rentPackageDO, rentPackageId).Error; err != nil {
@@ -69,7 +69,7 @@ func (b *BuddhaRentOrder) CreateOrder(ctx context.Context, userId, rentPackageId
 
 func (b *BuddhaRentOrder) ExistEffectiveOrder(ctx context.Context, userId, BuddhaId uint64) (bool, error) {
 	var unexpiredOrderNum int64
-	err := facades.MustGormDB(ctx, b.logger).
+	err := facades.MustGORMDB(ctx, b.logger).
 		Where(&models.BuddhaRentOrder{UserId: userId, BuddhaId: BuddhaId, Status: models.OrderStatusPayed}).
 		Where(enum.FieldEndRentAt + "> ? OR " + enum.FieldEndRentAt + " = 0", time.Now().Unix()).
 		Count(&unexpiredOrderNum).
@@ -83,7 +83,7 @@ func (b *BuddhaRentOrder) ExistEffectiveOrder(ctx context.Context, userId, Buddh
 
 func (b *BuddhaRentOrder) GetLongestAndEffectiveOrder(ctx context.Context) (*models.BuddhaRentOrder, error) {
 	var orderDO models.BuddhaRentOrder
-	db := facades.MustGormDB(ctx, b.logger)
+	db := facades.MustGORMDB(ctx, b.logger)
 	err := db.Where(map[string]interface{}{enum.FieldEndRentAt: 0, enum.FieldStatus: models.OrderStatusPayed}).
 		First(&orderDO).
 		Error

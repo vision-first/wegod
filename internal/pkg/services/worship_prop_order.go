@@ -31,7 +31,7 @@ func (w *WorshipPropOrder) TransErr(err error) error {
 
 func (w *WorshipPropOrder) CreateOrder(ctx context.Context, userId, worshipPropId uint64) (*models.WorshipPropOrder, error) {
 	var worshipPropDO models.WorshipProp
-	db := facades.MustGormDB(ctx, w.logger)
+	db := facades.MustGORMDB(ctx, w.logger)
 	if err := db.First(&worshipPropDO, worshipPropId).Error; err != nil {
 		w.logger.Error(ctx, err)
 		return nil, w.TransErr(err)
@@ -53,7 +53,7 @@ func (w *WorshipPropOrder) CreateOrder(ctx context.Context, userId, worshipPropI
 
 func (w *WorshipPropOrder) GetOrderBySn(ctx context.Context, userId uint64, sn string) (*models.WorshipPropOrder, error) {
 	var orderDO models.WorshipPropOrder
-	err := facades.MustGormDB(ctx, w.logger).
+	err := facades.MustGORMDB(ctx, w.logger).
 		Where(&models.WorshipPropOrder{UserId: userId, Sn: sn}).
 		First(ctx, &orderDO).
 		Error

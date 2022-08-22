@@ -35,7 +35,7 @@ func (u *UserPrayProp) TransErr(err error) error {
 
 func (u *UserPrayProp) EnsureUserEnoughProps(ctx context.Context, userId uint64, prayPropIds []uint64) (bool, error) {
 	var propNum int64
-	err := facades.MustGormDB(ctx, u.logger).
+	err := facades.MustGORMDB(ctx, u.logger).
 		Where(&models.UserPrayProp{UserId: userId}).
 		Where(enum.FieldPropId + " IN ? AND " + enum.FieldNum + " > 0", prayPropIds).
 		Group(enum.FieldPropId).
@@ -49,7 +49,7 @@ func (u *UserPrayProp) EnsureUserEnoughProps(ctx context.Context, userId uint64,
 }
 
 func (u *UserPrayProp) ConsumeUserProps(ctx context.Context, userId uint64, prayPropIds []uint64) error {
-	err := facades.MustGormDB(ctx, u.logger).
+	err := facades.MustGORMDB(ctx, u.logger).
 		Where(&models.UserPrayProp{UserId: userId}).
 		Where(enum.FieldPropId + " IN ? AND " + enum.FieldNum + " > 0", prayPropIds).
 		Update(enum.FieldNum, gorm.Expr(enum.FieldNum + " - 1")).
@@ -62,7 +62,7 @@ func (u *UserPrayProp) ConsumeUserProps(ctx context.Context, userId uint64, pray
 }
 
 func (u *UserPrayProp) PageUserPrayProps(ctx context.Context, queryStream *optionstream.QueryStream) ([]*models.UserPrayProp, *optionstream.Pagination, error) {
-	db := facades.MustGormDB(ctx, u.logger).
+	db := facades.MustGORMDB(ctx, u.logger).
 		Where(enum.FieldNum + " > 0").
 		Order(clause.OrderByColumn{Column: clause.Column{Name: enum.FieldCreatedAt}, Desc: true})
 

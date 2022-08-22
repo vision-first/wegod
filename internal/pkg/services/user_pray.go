@@ -35,7 +35,7 @@ func (u *UserPray) CreateUserPray(ctx context.Context, userId, buddhaId uint64, 
 		BuddhaId: buddhaId,
 		PrayPropIds: prayPropIds,
 	}
-	if err := facades.MustGormDB(ctx, u.logger).Create(userPray).Error; err != nil {
+	if err := facades.MustGORMDB(ctx, u.logger).Create(userPray).Error; err != nil {
 		u.logger.Error(ctx, err)
 		return nil, u.TransErr(err)
 	}
