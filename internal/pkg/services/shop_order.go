@@ -29,7 +29,7 @@ func NewShopOrder(logger *log.Logger) *ShopOrder {
 func (s *ShopOrder) TransErr(err error) error {
 	switch err {
 	case gorm.ErrRecordNotFound:
-		return apperrdef.NewErr(errs.ErrCodeShopProductNotFound)
+		return apperrdef.NewErr(errs.ErrCodeShopOrderNotFound)
 	}
 	return err
 }

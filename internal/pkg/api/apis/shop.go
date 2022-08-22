@@ -141,3 +141,17 @@ func (s *Shop) GetShopOrder(ctx api.Context, req *dtos.GetOrderReq) (*dtos.GetOr
 
 	return &resp, nil
 }
+
+func (s *Shop) GetProduct(ctx api.Context, req *dtos.GetProductReq) (*dtos.GetProductResp, error) {
+    var resp dtos.GetProductResp
+
+    productDO, err := services.NewShopProduct(s.logger).GetProductById(ctx, req.Id)
+	if err != nil {
+		s.logger.Error(ctx, err)
+		return nil, err
+	}
+
+	resp.ShopProduct = transShopProductDOToDTO(productDO)
+
+    return &resp, nil
+}

@@ -2,6 +2,9 @@ package services
 
 import (
 	"context"
+	"github.com/995933447/apperrdef"
+	"github.com/vision-first/wegod/internal/pkg/errs"
+	"gorm.io/gorm"
 	"github.com/995933447/log-go"
 	"github.com/995933447/optionstream"
 	"github.com/vision-first/wegod/internal/pkg/datamodel/models"
@@ -23,7 +26,20 @@ func NewShopProduct(logger *log.Logger) *ShopProduct {
 }
 
 func (s *ShopProduct) TransErr(err error) error {
+	switch err {
+	case gorm.ErrRecordNotFound:
+		return apperrdef.NewErr(errs.ErrCodeShopProductNotFound)
+	}
 	return err
+}
+
+func (s *ShopProduct) GetProductById(ctx context.Context, id uint64) (*models.ShopProduct, error) {
+	var product models.ShopProduct
+	if err := facades.MustGORMDB(ctx, s.logger).First(&product, id).Error; err != nil {
+		s.logger.Error(ctx, err)
+		return nil, s.TransErr(err)
+	}
+	return &product, nil
 }
 
 func (s *ShopProduct) PageProducts(ctx context.Context, queryStream *optionstream.QueryStream) ([]*models.ShopProduct, *optionstream.Pagination, error) {

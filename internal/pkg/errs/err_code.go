@@ -27,4 +27,5 @@ const (
 	ErrCodeShopProductNotFound apperrdef.ErrCode = 1118
 	ErrCodeCategoryNotFound apperrdef.ErrCode = 1119
 	ErrCodePostNotFound apperrdef.ErrCode = 1120
+	ErrCodeShopOrderNotFound apperrdef.ErrCode = 1118
 )

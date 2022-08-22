@@ -111,3 +111,11 @@ type GetOrderReq struct {
 type GetOrderResp struct {
 	Order *ShopOrder
 }
+
+type GetProductReq struct {
+	Id uint64
+}
+
+type GetProductResp struct {
+	ShopProduct *ShopProduct
+}
