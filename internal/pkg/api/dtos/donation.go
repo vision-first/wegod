@@ -9,10 +9,6 @@ type CreateDonationOrderReq struct {
 type CreateDonationOrderResp struct {
 }
 
-type PageDonationRanksReq struct {
-	PageQueryReq
-}
-
 type UserDonationRecord struct {
 	NickName string
 	Money uint32

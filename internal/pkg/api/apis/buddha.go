@@ -24,7 +24,7 @@ func NewBuddha(logger *log.Logger) *Buddha {
 	}
 }
 
-func (b *Buddha) PageBuddha(ctx api.Context, req *dtos.PageBuddhaReq) (*dtos.PageBuddhaResp, error) {
+func (b *Buddha) PageBuddha(ctx api.Context, req *dtos.PageQueryReq) (*dtos.PageBuddhaResp, error) {
 	var (
 		resp dtos.PageBuddhaResp
 		err error
@@ -100,7 +100,7 @@ func (b *Buddha) UnwatchBuddha(ctx api.Context, req *dtos.UnwatchBuddhaReq) (*dt
     return &resp, nil
 }
 
-func (b *Buddha) PageUserWatchedBuddhas(ctx api.Context, req *dtos.PageUserWatchedBuddhasReq) (*dtos.PageUserWatchedBuddhasResp, error) {
+func (b *Buddha) PageUserWatchedBuddhas(ctx api.Context, req *dtos.PageQueryReq) (*dtos.PageUserWatchedBuddhasResp, error) {
 	authIdent, err := ctx.GetAuthIdentOrFailed()
 	if err != nil {
 		b.logger.Error(ctx, err)
@@ -146,7 +146,7 @@ func (b *Buddha) CreateBuddhaRentOrder(ctx api.Context, req *dtos.CreateBuddhaRe
     return &resp, nil
 }
 
-func (b *Buddha) PageBuddhaRentPackages(ctx api.Context, req *dtos.PageBuddhaRentPackagesReq) (*dtos.PageBuddhaRentPackagesResp, error) {
+func (b *Buddha) PageBuddhaRentPackages(ctx api.Context, req *dtos.PageQueryReq) (*dtos.PageBuddhaRentPackagesResp, error) {
 	authIdent, err := ctx.GetAuthIdentOrFailed()
 	if err != nil {
 		b.logger.Error(ctx, err)
@@ -242,7 +242,7 @@ func (b *Buddha) PrayToBuddha(ctx api.Context, req *dtos.PrayToBuddhaReq) (*dtos
 func (b *Buddha) WorshipToBuddha(ctx api.Context, req *dtos.WorshipToBuddhaReq) (*dtos.WorshipToBuddhaResp, error) {
     var resp dtos.WorshipToBuddhaResp
 
-    worshipPropDO, err := services.NewWorshipProp(b.logger).GetWorshipProp(ctx, req.WorshipPropId)
+    worshipPropDO, err := services.NewWorshipProp(b.logger).GetWorshipPropById(ctx, req.WorshipPropId)
 	if err != nil {
 		b.logger.Error(ctx, err)
 		return nil, err
@@ -270,7 +270,12 @@ func (b *Buddha) WorshipToBuddha(ctx api.Context, req *dtos.WorshipToBuddhaReq) 
 		return &resp, nil
 	}
 
-	userWorshipPropDO, err := userWorshipSrv.GetUserWorshipProp(ctx, authIdent.GetUserId(), req.WorshipPropId, req.ConsumeUserWorshipPropId)
+	userWorshipPropDO, err := userWorshipSrv.GetUserWorshipProp(
+		ctx,
+		optionstream.NewStream(nil).
+			SetOption(queryoptions.EqualWorshipPropId, req.WorshipPropId).
+			SetOption(queryoptions.EqualUserId, authIdent.GetUserId()),
+		)
 	if err != nil {
 		b.logger.Error(ctx, err)
 		return nil, err

@@ -1,9 +1,5 @@
 package dtos
 
-type PageUserPrayPropsReq struct {
-	PageQueryReq
-}
-
 type UserPrayProp struct {
 	PrayProp
 	Num uint32

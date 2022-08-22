@@ -13,7 +13,7 @@ type Music struct {
 	logger *log.Logger
 }
 
-func (m *Music) PageMusics(ctx api.Context, req *dtos.PageMusicsReq) (*dtos.PageMusicsResp, error) {
+func (m *Music) PageMusics(ctx api.Context, req *dtos.PageQueryReq) (*dtos.PageMusicsResp, error) {
     var (
     	resp dtos.PageMusicsResp
     	musicDOs []*models.Music

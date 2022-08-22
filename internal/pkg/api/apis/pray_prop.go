@@ -34,7 +34,7 @@ func (p *PrayProp) CreatePrayPropOrder(ctx api.Context, req *dtos.CreatePrayProp
     return &resp, nil
 }
 
-func (p *PrayProp) PagePrayProps(ctx api.Context, req *dtos.PagePrayPropsReq) (*dtos.PagePrayPropsResp, error) {
+func (p *PrayProp) PagePrayProps(ctx api.Context, req *dtos.PageQueryReq) (*dtos.PagePrayPropsResp, error) {
     var resp dtos.PagePrayPropsResp
 
 	queryStream := optionstream.NewQueryStream(req.QueryOptions, req.Limit, req.Offset)
@@ -55,7 +55,7 @@ func (p *PrayProp) PagePrayProps(ctx api.Context, req *dtos.PagePrayPropsReq) (*
     return &resp, nil
 }
 
-func (p *PrayProp) PageUserPrayProps(ctx api.Context, req *dtos.PageUserPrayPropsReq) (*dtos.PageUserPrayPropsResp, error) {
+func (p *PrayProp) PageUserPrayProps(ctx api.Context, req *dtos.PageQueryReq) (*dtos.PageUserPrayPropsResp, error) {
 	var (
 		resp dtos.PageUserPrayPropsResp
 		userPrayPropDOs []*models.UserPrayProp

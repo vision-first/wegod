@@ -109,3 +109,38 @@ func transShopProductDOsToDTOs(shopProductDOs []*models.ShopProduct) []*dtos.Sho
 	}
 	return shopProductDTOs
 }
+
+func transShopOrderDOToDTO(shopOrderDO *models.ShopOrder) *dtos.ShopOrder {
+	return &dtos.ShopOrder{
+		Sn: shopOrderDO.Sn,
+		ProductId: shopOrderDO.ProductId,
+		ProductNameSnapshot: shopOrderDO.ProductNameSnapshot,
+		ProductMainImagesSnapshot: shopOrderDO.ProductMainImagesSnapshot,
+		Money: shopOrderDO.Money,
+		DeliveryTypeSnapshot: shopOrderDO.DeliveryTypeSnapshot,
+		ProductTypeSnapshot: shopOrderDO.ProductTypeSnapshot,
+		Status: shopOrderDO.Status,
+		ProductPriceSnapshot: shopOrderDO.ProductPriceSnapshot,
+		PayedAt: shopOrderDO.PayedAt,
+		Remark: shopOrderDO.Remark,
+		ConsigneeName: shopOrderDO.ConsigneeName,
+		ConsigneePhone: shopOrderDO.ConsigneePhone,
+		ConsigneeProvince: shopOrderDO.ConsigneeProvince,
+		ConsigneeCity: shopOrderDO.ConsigneeCity,
+		ConsigneeDistrict: shopOrderDO.ConsigneeDistrict,
+		ConsigneeAddress: shopOrderDO.ConsigneeAddress,
+		DeliveredAt: shopOrderDO.DeliveredAt,
+		FinishAt: shopOrderDO.FinishAt,
+		LogisticsSn: shopOrderDO.LogisticsSn,
+		LogisticsCompany: shopOrderDO.LogisticsCompany,
+		BoughtNum: shopOrderDO.BoughtNum,
+	}
+}
+
+func transShopOrderDOsToDTOs(shopOrderDOs []*models.ShopOrder) []*dtos.ShopOrder {
+	var shopOrderDTOs []*dtos.ShopOrder
+	for _, shopOrderDO := range shopOrderDOs {
+		shopOrderDTOs = append(shopOrderDTOs, transShopOrderDOToDTO(shopOrderDO))
+	}
+	return shopOrderDTOs
+}

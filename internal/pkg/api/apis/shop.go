@@ -14,7 +14,7 @@ type Shop struct {
 	logger *log.Logger
 }
 
-func (s *Shop) PageProducts(ctx api.Context, req *dtos.PageShopProductsReq) (*dtos.PageShopProductsResp, error) {
+func (s *Shop) PageProducts(ctx api.Context, req *dtos.PageQueryReq) (*dtos.PageShopProductsResp, error) {
 	queryStream := optionstream.NewQueryStream(req.QueryOptions, req.Limit, req.Limit)
 	queryStream.SetOption(queryoptions.OnShelfStatus, nil)
 
@@ -37,20 +37,60 @@ func (s *Shop) PageProducts(ctx api.Context, req *dtos.PageShopProductsReq) (*dt
 func (s *Shop) CreateOrder(ctx api.Context, req *dtos.CreateShopOrderReq) (*dtos.CreateShopOrderResp, error) {
     var resp dtos.CreateShopOrderResp
 
-    // TODO.write your logic
+    authIdent, err := ctx.GetAuthIdentOrFailed()
+	if err != nil {
+		s.logger.Error(ctx, err)
+		return nil, err
+	}
+
+	orderDO, err := services.NewShopOrder(s.logger).CreateOrder(
+		ctx,
+		authIdent.GetUserId(),
+		req.ProductId,
+		req.Num,
+		req.Remark,
+		services.Consignee{
+			ConsigneeName: req.ConsigneeName,
+			ConsigneePhone: req.ConsigneePhone,
+			ConsigneeProvince: req.ConsigneeProvince,
+			ConsigneeCity: req.ConsigneeCity,
+			ConsigneeDistrict: req.ConsigneeDistrict,
+			ConsigneeAddress: req.ConsigneeAddress,
+			LogisticsSn: req.LogisticsSn,
+			LogisticsCompany: req.LogisticsCompany,
+		},
+		)
+	if err != nil {
+		s.logger.Error(ctx, err)
+		return nil, err
+	}
+
+	resp.Order = transShopOrderDOToDTO(orderDO)
 
     return &resp, nil
 }
 
-func (s *Shop) PageOrders(ctx api.Context, req *dtos.PageShopOrdersReq) (*dtos.PageShopOrdersResp, error) {
+func (s *Shop) PageOrders(ctx api.Context, req *dtos.PageQueryReq) (*dtos.PageShopOrdersResp, error) {
     var resp dtos.PageShopOrdersResp
 
-    // TODO.write your logic
+	queryStream := optionstream.NewQueryStream(req.QueryOptions, req.Limit, req.Offset)
+
+	var (
+		orderDOs []*models.ShopOrder
+		err error
+	)
+	orderDOs, resp.Pagination, err = services.NewShopOrder(s.logger).PageOrders(ctx, queryStream)
+	if err != nil {
+		s.logger.Error(ctx, err)
+		return nil, err
+	}
+
+	resp.List = transShopOrderDOsToDTOs(orderDOs)
 
     return &resp, nil
 }
 
-func (s *Shop) PageProductCategories(ctx api.Context, req *dtos.PageShopProductCategoriesReq) (*dtos.PageShopProductCategoriesResp, error) {
+func (s *Shop) PageProductCategories(ctx api.Context, req *dtos.PageQueryReq) (*dtos.PageShopProductCategoriesResp, error) {
     var (
     	resp dtos.PageShopProductCategoriesResp
     	productCategoryDOs []*models.ShopProductCategory
@@ -69,4 +109,29 @@ func (s *Shop) PageProductCategories(ctx api.Context, req *dtos.PageShopProductC
 		})
 	}
     return &resp, nil
+}
+
+func (s *Shop) GetShopOrder(ctx api.Context, req *dtos.GetOrderReq) (*dtos.GetOrderResp, error) {
+    var resp dtos.GetOrderResp
+
+	authIdent, err := ctx.GetAuthIdentOrFailed()
+	if err != nil {
+		s.logger.Error(ctx, err)
+		return nil, err
+	}
+
+    orderDO, err := services.NewShopOrder(s.logger).GetOrder(
+		ctx,
+		optionstream.NewStream(nil).
+			SetOption(queryoptions.EqualId, req.OrderId).
+			SetOption(queryoptions.EqualUserId, authIdent.GetUserId()),
+		)
+	if err != nil {
+		s.logger.Error(ctx, err)
+		return nil, err
+	}
+
+	resp.Order = transShopOrderDOToDTO(orderDO)
+
+	return &resp, nil
 }

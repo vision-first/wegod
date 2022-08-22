@@ -29,12 +29,12 @@ func (w *WorshipPropOrder) TransErr(err error) error {
 	return err
 }
 
-func (p *WorshipPropOrder) CreateOrder(ctx context.Context, userId, worshipPropId uint64) (*models.WorshipPropOrder, error) {
+func (w *WorshipPropOrder) CreateOrder(ctx context.Context, userId, worshipPropId uint64) (*models.WorshipPropOrder, error) {
 	var worshipPropDO models.WorshipProp
-	db := facades.MustGormDB(ctx, p.logger)
+	db := facades.MustGormDB(ctx, w.logger)
 	if err := db.First(&worshipPropDO, worshipPropId).Error; err != nil {
-		p.logger.Error(ctx, err)
-		return nil, p.TransErr(err)
+		w.logger.Error(ctx, err)
+		return nil, w.TransErr(err)
 	}
 	orderDO := &models.WorshipPropOrder{
 		UserId: userId,
@@ -45,21 +45,21 @@ func (p *WorshipPropOrder) CreateOrder(ctx context.Context, userId, worshipPropI
 	}
 	err := db.Create(orderDO).Error
 	if err != nil {
-		p.logger.Error(ctx, err)
-		return nil, p.TransErr(err)
+		w.logger.Error(ctx, err)
+		return nil, w.TransErr(err)
 	}
 	return orderDO, nil
 }
 
-func (p *WorshipPropOrder) GetOrderBySn(ctx context.Context, userId uint64, sn string) (*models.WorshipPropOrder, error) {
+func (w *WorshipPropOrder) GetOrderBySn(ctx context.Context, userId uint64, sn string) (*models.WorshipPropOrder, error) {
 	var orderDO models.WorshipPropOrder
-	err := facades.MustGormDB(ctx, p.logger).
+	err := facades.MustGormDB(ctx, w.logger).
 		Where(&models.WorshipPropOrder{UserId: userId, Sn: sn}).
 		First(ctx, &orderDO).
 		Error
 	if err != nil {
-		p.logger.Error(ctx, err)
-		return nil, p.TransErr(err)
+		w.logger.Error(ctx, err)
+		return nil, w.TransErr(err)
 	}
 	return &orderDO, nil
 }

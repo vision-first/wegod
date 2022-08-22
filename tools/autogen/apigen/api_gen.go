@@ -3,7 +3,6 @@ package apigen
 import (
 	"bytes"
 	"fmt"
-	"github.com/995933447/stringhelper-go"
 	"go/ast"
 	"go/parser"
 	"go/token"
@@ -11,6 +10,7 @@ import (
 	"io/ioutil"
 	"os"
 	"strings"
+	"github.com/995933447/stringhelper-go"
 	"text/template"
 )
 

@@ -15,4 +15,9 @@ const (
 	EqualStatus
 	CreatedAtRange
 	PayedAtRange
+	EqualId
+	EqualWorshipPropId
+	OrderBySaleNumDesc
+	OrderByCreatedAtDesc
+	OrderByShelfAtDesc
 )

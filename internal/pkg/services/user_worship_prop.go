@@ -51,16 +51,31 @@ func (u *UserWorshipProp) PageUserWorshipProps(ctx context.Context, queryStream 
 	return userWorshipPropDOs, pagination, nil
 }
 
-func (u *UserWorshipProp) GetUserWorshipProp(ctx context.Context, userId, worshipPropId, id uint64) (*models.UserWorshipProp, error) {
-	var userWorshipPropDO models.UserWorshipProp
-	err := facades.MustGormDB(ctx, u.logger).
-		Where(map[string]interface{}{enum.FieldId: id, enum.FieldUserId: userId, enum.FieldWorshipPropId: worshipPropId}).
-		First(&userWorshipPropDO).
-		Error
+func (u *UserWorshipProp) GetUserWorshipProp(ctx context.Context, optionStream *optionstream.Stream) (*models.UserWorshipProp, error) {
+	db := facades.MustGormDB(ctx, u.logger)
+
+	err := optionstream.NewStreamProcessor(optionStream).
+		OnUint64(queryoptions.EqualUserId, func(val uint64) error {
+			db.Where(map[string]interface{}{enum.FieldUserId: val})
+			return nil
+		}).
+		OnUint64(queryoptions.EqualWorshipPropId, func(val uint64) error {
+			db.Where(map[string]interface{}{enum.FieldWorshipPropId: val})
+			return nil
+		}).
+		Process()
 	if err != nil {
 		u.logger.Error(ctx, err)
 		return nil, u.TransErr(err)
 	}
+
+	var userWorshipPropDO models.UserWorshipProp
+	err = db.First(&userWorshipPropDO).Error
+	if err != nil {
+		u.logger.Error(ctx, err)
+		return nil, u.TransErr(err)
+	}
+
 	return &userWorshipPropDO, nil
 }
 

@@ -67,7 +67,7 @@ func (w *WorshipProp) IsWorshipPropFree(ctx context.Context, id uint64) (bool, e
 	return worshipPropDO.Price == 0, nil
 }
 
-func (w *WorshipProp) GetWorshipProp(ctx context.Context, id uint64) (*models.WorshipProp, error)  {
+func (w *WorshipProp) GetWorshipPropById(ctx context.Context, id uint64) (*models.WorshipProp, error)  {
 	var prop models.WorshipProp
 	err := facades.MustGormDB(ctx, w.logger).Where(map[string]interface{}{enum.FieldId: id}).First(ctx, &prop).Error
 	if err != nil {

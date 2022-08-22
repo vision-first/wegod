@@ -8,10 +8,6 @@ type CreatePrayPropOrderReq struct {
 type CreatePrayPropOrderResp struct {
 }
 
-type PagePrayPropsReq struct {
-	PageQueryReq
-}
-
 type PrayProp struct {
 	Name string `json:"name" gorm:"type:varchar"`
 	Price uint32 `json:"price"`

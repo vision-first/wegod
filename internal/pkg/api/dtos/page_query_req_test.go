@@ -7,7 +7,7 @@ import (
 
 func TestSerializePageQueryReq(t *testing.T) {
 	j := `{"limit":10, "offset":11}`
-	var req PageBuddhaReq
+	var req PageQueryReq
 	err := json.Unmarshal([]byte(j), &req)
 	if err != nil {
 		t.Fatal(err)

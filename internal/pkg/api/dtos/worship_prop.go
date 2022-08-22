@@ -9,10 +9,6 @@ type WorshipProp struct {
 	AvailableDuration int64 `json:"available_duration"`
 }
 
-type PageWorshipPropsReq struct {
-	PageQueryReq
-}
-
 type PageWorshipPropsResp struct {
 	PageQueryResp
 	List []*WorshipProp

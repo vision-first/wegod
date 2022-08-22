@@ -7,10 +7,6 @@ type Buddha struct {
 	Sort uint32 `json:"sort"`
 }
 
-type PageBuddhaReq struct {
-	PageQueryReq
-}
-
 type PageBuddhaResp struct {
 	List []*Buddha `json:"list"`
 	PageQueryResp
@@ -28,10 +24,6 @@ type UnwatchBuddhaReq struct {
 }
 
 type UnwatchBuddhaResp struct {
-}
-
-type PageUserWatchedBuddhasReq struct {
-	PageBuddhaReq
 }
 
 type PageUserWatchedBuddhasResp struct {
@@ -67,10 +59,6 @@ type BuddhaRentPackage struct {
 	BuddhaId uint64 `json:"buddha_id"`
 }
 
-type PageBuddhaRentPackagesReq struct {
-	PageBuddhaReq
-}
-
 type PageBuddhaRentPackagesResp struct {
 	List []*BuddhaRentPackage `json:"list"`
 	PageQueryResp
@@ -86,9 +74,9 @@ type PrayToBuddhaResp struct {
 }
 
 type WorshipToBuddhaReq struct {
-	BuddhaId uint64
-	WorshipPropId uint64
-	ConsumeUserWorshipPropId uint64
+	BuddhaId uint64 `json:"buddha_id"`
+	WorshipPropId uint64 `json:"worship_prop_id"`
+	ConsumeUserWorshipPropId uint64 `json:"consume_user_worship_prop_id"`
 }
 
 type WorshipToBuddhaResp struct {

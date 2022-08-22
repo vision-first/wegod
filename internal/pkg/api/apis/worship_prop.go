@@ -14,7 +14,7 @@ type WorshipProp struct {
 	logger *log.Logger
 }
 
-func (w *WorshipProp) PageWorshipProps(ctx api.Context, req *dtos.PageWorshipPropsReq) (*dtos.PageWorshipPropsResp, error) {
+func (w *WorshipProp) PageWorshipProps(ctx api.Context, req *dtos.PageQueryReq) (*dtos.PageWorshipPropsResp, error) {
     var resp dtos.PageWorshipPropsResp
 
 	authIdent, err := ctx.GetAuthIdentOrFailed()

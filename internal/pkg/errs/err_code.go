@@ -24,4 +24,5 @@ const (
 	ErrCodeWorshipOrderNotFound apperrdef.ErrCode = 1115
 	ErrCodeUserWorshipPropNotFound apperrdef.ErrCode = 1116
 	ErrCodeDonationOrderNotFound apperrdef.ErrCode = 1117
+	ErrCodeShopProductNotFound apperrdef.ErrCode = 1118
 )

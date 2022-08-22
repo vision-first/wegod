@@ -10,7 +10,7 @@ type Post struct {
 	logger log.Logger
 }
 
-func (p *Post) PageCategories(ctx api.Context, req *dtos.PageCategoriesReq) (*dtos.PageCategoriesResp, error) {
+func (p *Post) PageCategories(ctx api.Context, req *dtos.PageQueryReq) (*dtos.PageCategoriesResp, error) {
     var resp dtos.PageCategoriesResp
 
     // TODO.Write your logic
@@ -18,7 +18,7 @@ func (p *Post) PageCategories(ctx api.Context, req *dtos.PageCategoriesReq) (*dt
     return &resp, nil
 }
 
-func (p *Post) PagePosts(ctx api.Context, req *dtos.PagePostsReq) (*dtos.PagePostsResp, error) {
+func (p *Post) PagePosts(ctx api.Context, req *dtos.PageQueryReq) (*dtos.PagePostsResp, error) {
     var resp dtos.PagePostsResp
 
     // TODO.Write your logic

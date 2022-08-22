@@ -51,7 +51,7 @@ func (d *Donation) CreateDonationOrder(ctx api.Context, req *dtos.CreateDonation
     return &resp, nil
 }
 
-func (d *Donation) PageDonationRanks(ctx api.Context, req *dtos.PageDonationRanksReq) (*dtos.PageDonationRanksResp, error) {
+func (d *Donation) PageDonationRanks(ctx api.Context, req *dtos.PageQueryReq) (*dtos.PageDonationRanksResp, error) {
 	queryStatStream := optionstream.NewQueryStream(req.QueryOptions, req.Limit, req.Offset)
 	queryStatStream.SetOption(queryoptions.OrderByPayedMoneyDesc, nil)
 
@@ -72,13 +72,7 @@ func (d *Donation) PageDonationRanks(ctx api.Context, req *dtos.PageDonationRank
 
 	userDOs, _, err := services.NewUser(d.logger).PageUsers(
 		ctx,
-		optionstream.NewQueryStream(
-			[]*optionstream.Option{
-				{Key: queryoptions.InIds, Val: reflectutil.PluckUint64(statDOs, metadata.FieldUserId)},
-			},
-			0,
-			0,
-			),
+		optionstream.NewQueryStream([]*optionstream.Option{{Key: queryoptions.InIds, Val: reflectutil.PluckUint64(statDOs, metadata.FieldUserId)}}, 0, 0),
 		)
 	if err != nil {
 		d.logger.Error(ctx, err)
