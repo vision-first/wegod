@@ -52,7 +52,7 @@ func (d *DonationOrder) PageOrders(ctx context.Context, queryStream *optionstrea
 
 func (d *DonationOrder) GetOrderBySn(ctx context.Context, sn string) (*models.DonationOrder, error) {
 	var order models.DonationOrder
-	err := facades.GORMDB(ctx, d.logger).Where(map[string]interface{}{enum.FieldSn: sn}).First(&order).Error
+	err := facades.MustGORMDB(ctx, d.logger).Where(map[string]interface{}{enum.FieldSn: sn}).First(&order).Error
 	if err != nil {
 		d.logger.Error(ctx, err)
 		return nil, d.TransErr(err)
