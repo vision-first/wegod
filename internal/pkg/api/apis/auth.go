@@ -18,6 +18,12 @@ type Auth struct {
 	redisGroup redisgroup.Group
 }
 
+func NewAuth(logger *log.Logger) *Auth {
+	return &Auth{
+		logger: logger,
+	}
+}
+
 func (a *Auth) TransErr(err error) error {
 	return err
 }

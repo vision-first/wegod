@@ -13,6 +13,12 @@ type Music struct {
 	logger *log.Logger
 }
 
+func NewMusic(logger *log.Logger) *Music {
+	return &Music{
+		logger: logger,
+	}
+}
+
 func (m *Music) PageMusics(ctx api.Context, req *dtos.PageQueryReq) (*dtos.PageMusicsResp, error) {
     var (
     	resp dtos.PageMusicsResp

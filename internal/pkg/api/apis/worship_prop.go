@@ -14,6 +14,12 @@ type WorshipProp struct {
 	logger *log.Logger
 }
 
+func NewWorshipProp(logger *log.Logger) *WorshipProp {
+	return &WorshipProp{
+		logger: logger,
+	}
+}
+
 func (w *WorshipProp) PageWorshipProps(ctx api.Context, req *dtos.PageQueryReq) (*dtos.PageWorshipPropsResp, error) {
     var resp dtos.PageWorshipPropsResp
 

@@ -36,9 +36,18 @@ func (p *HttpRouterProvider) Boot() error {
 		})
 	})
 
-	apiDispatcher := ginimpl.NewApiDispatcher()
 	buddhaApi := apis.NewBuddha(logger)
-	p.srv.POST("/buddhas", apiDispatcher.MakeDispatchFunc(buddhaApi.PageBuddha))
+	postApi := apis.NewPost(logger)
+	authApi := apis.NewAuth(logger)
+
+	apiDispatcher := ginimpl.NewApiDispatcher()
+	publicGroup := p.srv.Group("/pub")
+	publicGroup.GET("/buddhas", apiDispatcher.MakeDispatchFunc(buddhaApi.PageBuddha))
+	publicGroup.GET("/posts", apiDispatcher.MakeDispatchFunc(postApi.PagePosts))
+	publicGroup.GET("/post/categories", apiDispatcher.MakeDispatchFunc(postApi.PageCategories))
+	publicGroup.GET("/post/post", apiDispatcher.MakeDispatchFunc(postApi.GetPost))
+	publicGroup.POST("/register", apiDispatcher.MakeDispatchFunc(authApi.Register))
+	publicGroup.POST("/login", apiDispatcher.MakeDispatchFunc(authApi.Login))
 
 	return nil
 }

@@ -20,6 +20,12 @@ type Donation struct {
 	logger *log.Logger
 }
 
+func NewDonation(logger *log.Logger) *Donation {
+	return &Donation{
+		logger: logger,
+	}
+}
+
 func (d *Donation) CreateDonationOrder(ctx api.Context, req *dtos.CreateDonationOrderReq) (*dtos.CreateDonationOrderResp, error) {
     var resp dtos.CreateDonationOrderResp
 

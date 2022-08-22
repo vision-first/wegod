@@ -10,7 +10,14 @@ const (
 }`
 	apiStructTmpl = `type {{.ApiModule}} struct {
 	logger *log.Logger
-}`
+}
+
+func New{{.ApiModule}}(logger *log.Logger) *{{.ApiModule}} {
+	return &{{.ApiModule}} {
+		logger: logger,
+	}
+}
+`
 	apiReqDTOTmpl = `type {{.ApiMethod}}Req struct {
 }`
 	apiRespDTOTmpl = `type {{.ApiMethod}}Resp struct {

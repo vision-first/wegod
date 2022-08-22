@@ -14,6 +14,12 @@ type Shop struct {
 	logger *log.Logger
 }
 
+func NewShop(logger *log.Logger) *Shop {
+	return &Shop{
+		logger: logger,
+	}
+}
+
 func (s *Shop) PageProducts(ctx api.Context, req *dtos.PageQueryReq) (*dtos.PageShopProductsResp, error) {
 	queryStream := optionstream.NewQueryStream(req.QueryOptions, req.Limit, req.Limit)
 	queryStream.SetOption(queryoptions.OnShelfStatus, nil)

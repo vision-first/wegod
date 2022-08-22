@@ -16,6 +16,12 @@ type PrayProp struct {
 	logger *log.Logger
 }
 
+func NewPrayProp(logger *log.Logger) *PrayProp {
+	return &PrayProp{
+		logger: logger,
+	}
+}
+
 func (p *PrayProp) CreatePrayPropOrder(ctx api.Context, req *dtos.CreatePrayPropOrderReq) (*dtos.CreatePrayPropOrderResp, error) {
     var resp dtos.CreatePrayPropOrderResp
 
